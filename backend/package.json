@@ -7,7 +7,6 @@
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js"
-
   },
   "keywords": [
     "MERN",
@@ -16,7 +15,8 @@
   "author": "eCituk",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "mongoose": "^6.2.4"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
