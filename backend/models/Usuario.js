@@ -29,6 +29,7 @@ const UsuarioSchema = mongoose.Schema({
     timestamps: true
 })
 
+//midleware
 UsuarioSchema.pre('save', async function(next) {
     if( !this.isModified('password') ){
         next()
