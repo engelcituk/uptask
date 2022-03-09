@@ -1,5 +1,5 @@
 import express from 'express'
-import { registrar, autenticar, confirmar, olvidePassword, comprobarToken } from '../controllers/usuarioController.js'
+import { registrar, autenticar, confirmar, olvidePassword, comprobarToken, nuevoPassword } from '../controllers/usuarioController.js'
 
 const router = express.Router()
 
@@ -8,6 +8,8 @@ router.post('/', registrar) // crea un nuevo usuario
 router.post('/login', autenticar ) // autentica
 router.get('/confirmar/:token', confirmar ) // confirmar cuenta
 router.post('/olvide-password', olvidePassword ) // para solicitar un reseteo de password
-router.get('/olvide-password/:token', comprobarToken ) // recuperar cuenta
+//router.get('/olvide-password/:token', comprobarToken ) // recuperar cuenta, comprobar token
+//router.post('/olvide-password/:token', nuevoPassword ) // recuperar cuenta
+router.route('/olvide-password/:token').get(comprobarToken).post(nuevoPassword)
 
 export default router

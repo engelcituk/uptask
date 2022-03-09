@@ -60,7 +60,6 @@ const confirmar = async (req, res) => {
     }
 
     try {
-
         usuarioConfirmar.confirmado = true
         usuarioConfirmar.token = ''
         await usuarioConfirmar.save()
@@ -92,21 +91,44 @@ const olvidePassword = async(req, res) => {
 const comprobarToken = async(req, res) => {
     const { token } = req.params 
     //Comprobar que usuario existe
-    const tokenValido = await Usuario.findOne({token})
+    const usuario = await Usuario.findOne({token})
 
-    if(tokenValido){
+    if( usuario ){
         res.json( { msg:'Token válido y el usuario existe'} )
-
     } else {
         const error = new Error('Token no válido')
         return res.status(404).json( { msg: error.message } )
     }
 }
 
+const nuevoPassword = async(req, res) => {
+    const { token } = req.params 
+    const { password } = req.body 
+    //Comprobar que usuario existe
+    const usuario = await Usuario.findOne({token})
+
+    if(usuario){
+        usuario.password = password
+        usuario.token = ''        
+        try {
+            await usuario.save()
+            res.json( { msg:'La contraseña se ha cambiada'} )   
+        } catch (error) {
+            console.log(error)
+        }
+    } else {
+        const error = new Error('Token no válido')
+        return res.status(404).json( { msg: error.message } )
+    }
+
+}
+
+
 export {
     registrar,
     autenticar,
     confirmar,
     olvidePassword,
-    comprobarToken
+    comprobarToken,
+    nuevoPassword
 }
