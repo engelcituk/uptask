@@ -77,7 +77,7 @@ const olvidePassword = async(req, res) => {
     const usuario = await Usuario.findOne({email})
     if( !usuario ){
         const error = new Error('Usuario no existe')
-        return res.status(400).json( { msg: error.message } )
+        return res.status(404).json( { msg: error.message } )
     }
 
     try {
@@ -89,9 +89,24 @@ const olvidePassword = async(req, res) => {
     }
 }
 
+const comprobarToken = async(req, res) => {
+    const { token } = req.params 
+    //Comprobar que usuario existe
+    const tokenValido = await Usuario.findOne({token})
+
+    if(tokenValido){
+        res.json( { msg:'Token válido y el usuario existe'} )
+
+    } else {
+        const error = new Error('Token no válido')
+        return res.status(404).json( { msg: error.message } )
+    }
+}
+
 export {
     registrar,
     autenticar,
     confirmar,
-    olvidePassword
+    olvidePassword,
+    comprobarToken
 }
