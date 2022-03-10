@@ -42,5 +42,5 @@ usuarioSchema.methods.comprobarPassword = async function( passwordFromForm ) {
     return await bcrypt.compare(passwordFromForm, this.password )
 }
 
-const Usuario = mongoose.model("Usuario", usuarioSchema)
+const Usuario = mongoose.model('Usuario', usuarioSchema)
 export default Usuario
