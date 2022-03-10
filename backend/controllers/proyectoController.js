@@ -17,7 +17,26 @@ const nuevoProyecto = async (req, res) => {
 }
 
 const obtenerProyecto = async (req, res) => {
-  
+    const { id } = req.params
+    
+    if( id.length != 24 ){
+        const error = new Error('el formato del id no es valido')
+        return res.status(400).json( { msg: error.message} )
+    }
+
+    const proyecto = await Proyecto.findById(id)
+
+    if(!proyecto){
+        const error = new Error('El proyecto no existe')
+        return res.status(404).json( { msg: error.message } )
+    }
+
+    if( proyecto.creador.toString() !== req.usuario._id.toString() ){
+        const error = new Error('No puedes ver este proyecto si no eres creador o colaborador')
+        return res.status(401).json( { msg: error.message} )
+    }
+
+    return res.json(proyecto)
 }
 
 const editarProyecto = async (req, res) => {
