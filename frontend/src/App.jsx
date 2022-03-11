@@ -2,7 +2,7 @@ function App() {
 
   return (
     <div className="App">
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt repellat ducimus labore eligendi? Exercitationem dolores temporibus minus mollitia reiciendis neque voluptatibus consectetur cupiditate provident tempora ratione, recusandae eos, consequatur officia.
+      <h1>UpTask</h1>
     </div>
   )
 }
@@ -15,4 +15,10 @@ export default App
 
   Instalo axios y react-router-dom
   npm i axios react-router-dom
+
+  instalo tailwind
+  npm i -D tailwindcss postcss autoprefixer
+
+  Para generar el archivo de configuracion de tailwind y de postcss
+  npx tailwindcss innit -p    
  */
