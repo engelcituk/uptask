@@ -1,9 +1,25 @@
+import { BrowserRouter, Routes, Route  } from 'react-router-dom'
+import AuthLayout from './layouts/AuthLayout'
+import Login from './pages/Login'
+import Registrar from './pages/Registrar'
+import NuevoPassword from './pages/NuevoPassword'
+import OlvidePassword from './pages/OlvidePassword'
+import ConfirmarCuenta from './pages/ConfirmarCuenta'
+
 function App() {
 
   return (
-    <div className="App">
-      <h1>UpTask</h1>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<AuthLayout/>}>
+          <Route index element={<Login/>} />
+          <Route path='registrar' element={<Registrar/>} />
+          <Route path='nuevo-password' element={<OlvidePassword/>} />
+          <Route path='olvide-password/:token' element={<NuevoPassword/>} />
+          <Route path='confirmar/:id' element={<ConfirmarCuenta/>} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
