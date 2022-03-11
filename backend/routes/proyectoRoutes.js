@@ -1,6 +1,6 @@
 import express from 'express'
 
-import { agregarColaborador, editarProyecto, eliminarColaborador, eliminarProyecto, nuevoProyecto, obtenerProyecto, obtenerProyectos, obtenerTareas } from '../controllers/proyectoController.js'
+import { agregarColaborador, editarProyecto, eliminarColaborador, eliminarProyecto, nuevoProyecto, obtenerProyecto, obtenerProyectos } from '../controllers/proyectoController.js'
 
 import checkAuth from '../middlewares/checkAuth.js'
 
@@ -18,7 +18,6 @@ router.
     .put(checkAuth, editarProyecto)
     .delete(checkAuth, eliminarProyecto)
 
-router.get('/tareas/:id', checkAuth, obtenerTareas)
 router.post('/agregar-colaborador/:id', checkAuth, agregarColaborador)
 router.post('/eliminar-colaborador/:id', checkAuth, eliminarColaborador)
 

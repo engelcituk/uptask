@@ -36,8 +36,12 @@ const obtenerProyecto = async (req, res) => {
         const error = new Error('No puedes ver este proyecto si no eres creador o colaborador')
         return res.status(401).json( { msg: error.message} )
     }
+    //obtener las tareas del proyeccto
 
-    return res.json(proyecto)
+    const tareas = await Tarea.find().where('proyecto').equals(proyecto._id)
+
+    return res.status(200).json( {proyecto, tareas} )
+
 }
 
 const editarProyecto = async (req, res) => {
@@ -113,31 +117,6 @@ const eliminarColaborador = async (req, res) => {
   
 }
 
-const obtenerTareas = async (req, res) => {
-    const { id } =  req.params
-
-    if( id.length != 24 ){
-        const error = new Error('el formato del id no es valido')
-        return res.status(400).json( { msg: error.message} )
-    }
-
-    const existeProyecto = await Proyecto.findById(id)
-
-    if(!existeProyecto){
-        const error = new Error('El proyecto no existe')
-        return res.status(404).json( { msg: error.message } )
-    }
-
-    if( existeProyecto.creador.toString() !== req.usuario._id.toString() ){
-        const error = new Error('No puedes ver las tareas del proyecto')
-        return res.status(401).json( { msg: error.message} )
-    }
-
-    const tareas = await Tarea.find().where('proyecto').equals(id)
-    return res.status(200).json( tareas )
-
-
-}
 
 
 export {
@@ -147,6 +126,5 @@ export {
     eliminarProyecto,
     nuevoProyecto,
     obtenerProyecto,
-    obtenerProyectos,
-    obtenerTareas
+    obtenerProyectos
 }
