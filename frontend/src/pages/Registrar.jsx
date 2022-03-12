@@ -1,6 +1,12 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 function Registrar() {
+  const [ nombre, setNombre ] = useState('')
+  const [ email, setEmail ] = useState('')
+  const [ password, setPassword ] = useState('')
+  const [ repetirPassword, setRepetirPassword] = useState('')
+
   return (
     <>
       <h1 className="text-sky-600 font-black text-6xl capitalize">Registrate y crea tus {' '}
@@ -18,6 +24,8 @@ function Registrar() {
             type="text"
             placeholder="Su nombre completo"
             className="w-full mt-3 p-3 border rounded-lg bg-gray-50"
+            value={nombre}
+            onChange={ e => setNombre(e.target.value)}
           />
         </div>
 
@@ -31,6 +39,8 @@ function Registrar() {
             type="email"
             placeholder="Email de registro"
             className="w-full mt-3 p-3 border rounded-lg bg-gray-50"
+            value={email}
+            onChange={ e => setEmail(e.target.value)}
           />
         </div>
 
@@ -44,6 +54,8 @@ function Registrar() {
             type="password"
             placeholder="Contraseña"
             className="w-full mt-3 p-3 border rounded-lg bg-gray-50"
+            value={password}
+            onChange={ e => setPassword(e.target.value)}
           />
         </div>
 
@@ -57,6 +69,8 @@ function Registrar() {
             type="password"
             placeholder="Confirmar contraseña"
             className="w-full mt-3 p-3 border rounded-lg bg-gray-50"
+            value={repetirPassword}
+            onChange={ e => setRepetirPassword(e.target.value)}
           />
         </div>
 
