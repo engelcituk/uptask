@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 
 const Login = () => {
   return (
@@ -34,10 +35,21 @@ const Login = () => {
 
         <input
           type="sumit"
-          value="Iniciar sesión"
+          defaultValue="Iniciar sesión"
           className="bg-sky-700 w-full py-3 mb-5 text-white uppercase font-bold rounded text-center hover:cursor-pointer hover:bg-sky-800 transition-colors"/>
-
       </form>
+
+      <nav className="lg:flex lg:justify-between">
+        <Link
+          className='block text-center my-5 text-slate-500 uppercase text-sm'
+          to="registrar"
+        >¿No tienes una cuenta? Regístrate</Link>
+
+        <Link
+          className='block text-center my-5 text-slate-500 uppercase text-sm'
+          to="nuevo-password"
+        >Olvidé contraseña</Link>
+      </nav>
     </>
   )
 }
