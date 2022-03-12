@@ -47,7 +47,7 @@ const Login = () => {
 
         <Link
           className='block text-center my-5 text-slate-500 uppercase text-sm'
-          to="/nuevo-password"
+          to="/olvide-password"
         >Olvidé contraseña</Link>
       </nav>
     </>
