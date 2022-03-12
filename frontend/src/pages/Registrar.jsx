@@ -13,11 +13,32 @@ function Registrar() {
     e.preventDefault()
     if( [nombre, email, password, repetirPassword].includes('') ){
       setAlerta({
-        msg: 'todos los campos son obligatorios',
+        msg: 'Todos los campos son obligatorios',
         error: true
       })
       return
     }
+
+    if( password !== repetirPassword ){
+      setAlerta({
+        msg: 'Las contraseñas no son iguales',
+        error: true
+      })
+      return
+    }
+
+    if( password.length < 6 ){
+      setAlerta({
+        msg: 'La contraseña debe tener minimo 6 carácteres',
+        error: true
+      })
+      return
+    }
+
+    setAlerta({}) // si todo se cumple, aleerta se vuelve un objeto vacío
+    // crear el usuario en la api
+    console.log('Creando')
+
   }
 
   const { msg } = alerta
