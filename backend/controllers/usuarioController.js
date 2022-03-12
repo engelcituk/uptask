@@ -9,16 +9,18 @@ const registrar = async (req, res) => {
 
     if( existeUsuario ){
         const error = new Error('Usuario ya registrado')
-        return res.status(400).json( { msg: error.message } )
+        return res.status(400).json( {ok: false, msg: error.message } )
     }
+   
     try {
         const usuario = new Usuario( req.body )
         usuario.token = generarId() //genero un id unico
-        const usuarioAlmacenado = await usuario.save()
-        res.json(usuarioAlmacenado)
+        await usuario.save()
+        return res.json({ok: true, msg: 'Usuario creado correctamente, revisa tu email para confirmar tu cuenta'})
     } catch (error) {
         console.log( error )
     }
+    
 }
 
 const autenticar = async (req, res) => {

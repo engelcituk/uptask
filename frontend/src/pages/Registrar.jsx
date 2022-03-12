@@ -39,10 +39,13 @@ function Registrar() {
     setAlerta({}) // si todo se cumple, aleerta se vuelve un objeto vacío
     // crear el usuario en la api
     try {
-      const respuesta = await axios.post('http://localhost:4000/api/usuarios', {nombre, email, password})
-      console.log(respuesta)
+      const { data } = await axios.post('http://localhost:4000/api/usuarios', {nombre, email, password})
+      const { ok, msg } = data
+      setAlerta({msg: msg, error: false })
     } catch (error) {
-      console.log(error) 
+      if(error.response){
+        setAlerta({msg: error.response.data.msg, error: true })
+      }
     }
 
   }
