@@ -39,9 +39,15 @@ function Registrar() {
     setAlerta({}) // si todo se cumple, aleerta se vuelve un objeto vacío
     // crear el usuario en la api
     try {
-      const { data } = await axios.post('http://localhost:4000/api/usuarios', {nombre, email, password})
+      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/usuarios`, {nombre, email, password})
       const { ok, msg } = data
       setAlerta({msg: msg, error: false })
+      //reseteo los valores del form
+      setNombre('')
+      setEmail('')
+      setPassword('')
+      setRepetirPassword('')
+
     } catch (error) {
       if(error.response){
         setAlerta({msg: error.response.data.msg, error: true })
