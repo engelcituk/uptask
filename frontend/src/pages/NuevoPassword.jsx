@@ -20,7 +20,7 @@ const NuevoPassword = () => {
         </div>
 
         <input
-          type="sumit"
+          type="submit"
           defaultValue="Guardar nuevo password"
           className="bg-sky-700 w-full py-3 mb-5 text-white uppercase font-bold rounded text-center hover:cursor-pointer hover:bg-sky-800 transition-colors"/>
       </form>
