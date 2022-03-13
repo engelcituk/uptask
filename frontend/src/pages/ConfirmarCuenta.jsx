@@ -6,7 +6,7 @@ import Alerta from '../components/Alerta'
 const ConfirmarCuenta = () => {
   const [ alerta, setAlerta ] = useState({})
   const [ cuentaConfirmada, setCuentaConfirmada ] = useState(false)
-
+  //parametros tomatos desde la url
   const params = useParams()
   const { id } = params
 
