@@ -10,6 +10,8 @@ import OlvidePassword from './pages/OlvidePassword'
 import ConfirmarCuenta from './pages/ConfirmarCuenta'
 //private pages
 import Proyectos from './pages/Proyectos'
+import NuevoProyecto from './pages/NuevoProyecto'
+
 
 import { AuthProvider } from './context/AuthProvider'
 function App() {
@@ -27,6 +29,8 @@ function App() {
           </Route>
           <Route path='/proyectos' element={<RutaProtegida/>}>
             <Route index element={<Proyectos/>} />
+            <Route path='crear-proyecto' element={<NuevoProyecto/>} />
+
           </Route>
         </Routes>
       </AuthProvider>
