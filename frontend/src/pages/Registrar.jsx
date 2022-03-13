@@ -9,6 +9,7 @@ function Registrar() {
   const [ password, setPassword ] = useState('')
   const [ repetirPassword, setRepetirPassword] = useState('')
   const [ alerta, setAlerta ] = useState({})
+  const { msg } = alerta
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -55,8 +56,6 @@ function Registrar() {
     }
 
   }
-
-  const { msg } = alerta
 
   return (
     <>

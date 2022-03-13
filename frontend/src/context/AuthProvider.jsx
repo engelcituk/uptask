@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import clienteAxios from '../config/clienteAxios'
  
 const AuthContext = createContext()
@@ -8,6 +8,8 @@ const AuthProvider = ({children}) => {
     const [ auth, setAuth ] = useState({})
     const [ cargando, setCargando ] = useState(true)
     const navigate = useNavigate() // para redirección
+    const location = useLocation() // para obtener la ruta actual
+
     useEffect(() => {
         const autenticarUsuario = async () => {
             const token = localStorage.getItem('token')
@@ -26,7 +28,8 @@ const AuthProvider = ({children}) => {
             try {
                 const { data } = await clienteAxios(`/usuarios/perfil`, config)
                 setAuth(data.usuario )
-                navigate('/proyectos') // en caso de que el usuario, esté autenticado, lo mando a proyectos
+                // en caso de que el usuario, esté autenticado, lo mando a la ruta protegida proyectos u los restantes
+                navigate(location.pathname ) 
             } catch (error) {
                 setAuth(data.usuario )// si falla algo objeto vacío para auth
                 console.log(error)
