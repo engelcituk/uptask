@@ -33,6 +33,7 @@ const AuthProvider = ({children}) => {
     return (
         <AuthContext.Provider
             value={{
+                auth, // el state auth
                 setAuth // paso el modificador para usarlo donde sea llamado
             }}
         >

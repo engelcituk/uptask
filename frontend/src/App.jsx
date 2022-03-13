@@ -1,10 +1,16 @@
 import { BrowserRouter, Routes, Route  } from 'react-router-dom'
+//Layouts
 import AuthLayout from './layouts/AuthLayout'
+import RutaProtegida from './layouts/RutaProtegida'
+//public pages
 import Login from './pages/Login'
 import Registrar from './pages/Registrar'
 import NuevoPassword from './pages/NuevoPassword'
 import OlvidePassword from './pages/OlvidePassword'
 import ConfirmarCuenta from './pages/ConfirmarCuenta'
+//private pages
+import Proyectos from './pages/Proyectos'
+
 import { AuthProvider } from './context/AuthProvider'
 function App() {
 
@@ -18,6 +24,9 @@ function App() {
             <Route path='olvide-password' element={<OlvidePassword/>} />
             <Route path='olvide-password/:token' element={<NuevoPassword/>} />
             <Route path='confirmar/:id' element={<ConfirmarCuenta/>} />
+          </Route>
+          <Route path='/proyectos' element={<RutaProtegida/>}>
+            <Route index element={<Proyectos/>} />
           </Route>
         </Routes>
       </AuthProvider>
