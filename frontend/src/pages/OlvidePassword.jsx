@@ -10,7 +10,7 @@ const OlvidePassword = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
-    if (email === '' || email.length < 0 ) {
+    if (email === '' || email.length < 6 ) {
       setAlerta({
         msg: 'El campo email es obligatorio',
         error: true
