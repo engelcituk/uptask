@@ -29,7 +29,7 @@ const Login = () => {
       setEmail('')
       setPassword('')
       setAlerta({})
-      localStorage.setItem('toke', usuario.token )
+      localStorage.setItem('token', usuario.token )
       setAuth(usuario)
     } catch (error) {
       if(error.response){

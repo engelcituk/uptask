@@ -142,9 +142,9 @@ const nuevoPassword = async(req, res) => {
 
 }
 
-const perfil = async(req, res) => {
+const perfil = async (req, res) => {
     const { usuario } = req
-    res.json( usuario )   
+    return res.status(200).json( {ok: true, usuario } )   
 }
 
 
