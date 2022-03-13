@@ -18,6 +18,19 @@ const Login = () => {
       })
       return
     }
+
+    try {
+      const { data } = await clienteAxios.post(`/usuarios/login`, { email, password})
+      const { ok, msg } = data
+      //reseteo los valores del form
+      setEmail('')
+      setPassword('')
+      setAlerta({})
+    } catch (error) {
+      if(error.response){
+        setAlerta({msg: error.response.data.msg, error: true })
+      }
+    }
   }
 
   return (
