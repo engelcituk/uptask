@@ -11,7 +11,7 @@ const nuevoProyecto = async (req, res) => {
     proyecto.creador = req.usuario._id
     try {
         const proyectoAlmacenado = await proyecto.save()
-        res.json(proyectoAlmacenado)
+        return res.status(201).json({ok:true, proyecto: proyectoAlmacenado })
     } catch (error) {
         console.log(error)
     }

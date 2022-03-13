@@ -18,6 +18,7 @@ const AuthProvider = ({children}) => {
                 setCargando(false)
                 return
             }
+            
             const config = {
                 headers:{
                     'Conten-Type': 'application/json', 
@@ -31,7 +32,7 @@ const AuthProvider = ({children}) => {
                 // en caso de que el usuario, esté autenticado, lo mando a la ruta protegida proyectos u los restantes
                 navigate(location.pathname ) 
             } catch (error) {
-                setAuth(data.usuario )// si falla algo objeto vacío para auth
+                setAuth({})// si falla algo objeto vacío para auth
                 console.log(error)
             }
             setCargando(false)
