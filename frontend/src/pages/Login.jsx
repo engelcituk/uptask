@@ -21,11 +21,12 @@ const Login = () => {
 
     try {
       const { data } = await clienteAxios.post(`/usuarios/login`, { email, password})
-      const { ok, msg } = data
+      const { ok, usuario } = data
       //reseteo los valores del form
       setEmail('')
       setPassword('')
       setAlerta({})
+      localStorage.setItem('toke', usuario.token )
     } catch (error) {
       if(error.response){
         setAlerta({msg: error.response.data.msg, error: true })
