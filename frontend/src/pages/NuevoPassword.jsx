@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import axios from 'axios'
+import clienteAxios from '../config/clienteAxios'
 import Alerta from '../components/Alerta'
 
 const NuevoPassword = () => {
@@ -16,8 +16,7 @@ const NuevoPassword = () => {
   useEffect( () => {
     const comprobarToken = async () => {
       try {
-        const url = `${import.meta.env.VITE_BACKEND_URL}/api/usuarios/olvide-password/${token}`
-        await axios(url)
+        await clienteAxios(`/usuarios/olvide-password/${token}`)
         setTokenValido(true)
       } catch (error) {
         if(error.response){
@@ -40,7 +39,7 @@ const NuevoPassword = () => {
     }
 
     try {
-      const { data } = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/usuarios/olvide-password/${token}`, {password})
+      const { data } = await clienteAxios.post(`/usuarios/olvide-password/${token}`, {password})
       setAlerta({msg: data.msg, error: false })
       setPassword('')
       setPasswordCambiado(true)
@@ -94,7 +93,15 @@ const NuevoPassword = () => {
           <Link
               className='block text-center my-5 text-slate-500 uppercase text-sm'
               to="/"
-            >Cuenta confirmada, Inicia sesión</Link>
+            >Contraseña cambiada, Inicia sesión</Link>
+        )
+      }
+      {
+        ( !passwordCambiado || !tokenValido ) && (
+          <Link
+            className='block text-center my-5 text-slate-500 uppercase text-sm'
+            to="/"
+          >Regresar</Link>
         )
       }
       
