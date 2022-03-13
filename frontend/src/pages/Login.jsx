@@ -10,7 +10,7 @@ const Login = () => {
   const [ alerta, setAlerta ] = useState({})
   const { msg } = alerta
 
-  const {  } = useAuth()
+  const { setAuth } = useAuth()
   
   const handleSubmit = async e => {
     e.preventDefault()
@@ -30,6 +30,7 @@ const Login = () => {
       setPassword('')
       setAlerta({})
       localStorage.setItem('toke', usuario.token )
+      setAuth(usuario)
     } catch (error) {
       if(error.response){
         setAlerta({msg: error.response.data.msg, error: true })
