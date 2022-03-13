@@ -11,7 +11,7 @@ const Login = () => {
   const { msg } = alerta
 
   const { setAuth } = useAuth()
-  
+
   const handleSubmit = async e => {
     e.preventDefault()
     if( [email, password].includes('') ){
