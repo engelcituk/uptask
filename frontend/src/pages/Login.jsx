@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import clienteAxios from '../config/clienteAxios'
 import Alerta from '../components/Alerta'
+import useAuth from '../hooks/useAuth'
 
 const Login = () => {
   const [ email, setEmail ] = useState('')
@@ -9,6 +10,8 @@ const Login = () => {
   const [ alerta, setAlerta ] = useState({})
   const { msg } = alerta
 
+  const {  } = useAuth()
+  
   const handleSubmit = async e => {
     e.preventDefault()
     if( [email, password].includes('') ){
