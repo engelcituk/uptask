@@ -72,7 +72,7 @@ const editarProyecto = async (req, res) => {
 
     try {
         const proyectoActualizado = await proyecto.save()
-        return res.json(proyectoActualizado)
+        return res.status(200).json( { ok:true, proyecto: proyectoActualizado } )
     } catch (error) {
         console.log(error)
     }

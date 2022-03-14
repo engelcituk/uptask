@@ -47,7 +47,6 @@ const ProyectosProvider = ({children}) => {
     const submitProyecto = async proyecto => {
 
         const token = localStorage.getItem('token')
-        
         if(!token) return
 
         const config = {
@@ -57,6 +56,34 @@ const ProyectosProvider = ({children}) => {
             }
         }
 
+        if( proyecto.id ){
+            actualizarProyecto(proyecto, config)
+        } else {
+            guardarProyecto(proyecto, config)
+        }
+    }
+
+    const actualizarProyecto = async (proyecto, config) => {
+        try {
+            const { data } = await clienteAxios.put(`/proyectos/${proyecto.id}`, proyecto, config )
+            const proyectosPrevios = proyectos.filter( proyecto => proyecto._id !== proyecto.id)
+            setProyectos([...proyectosPrevios, {...data.proyecto } ]) // agrego al state proyectos el nuevo proyecto creado
+            setAlerta({
+                msg: 'El proyecto se actualizó correctamente',
+                error: false
+            })
+            //despues de  3 segundos lo mando al listado de proyectos
+            setTimeout(() => {
+                setAlerta({})
+                navigate('/proyectos')
+            }, 3000)
+            // setProyectos( data.usuario )
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const guardarProyecto = async (proyecto, config) => {
         try {
             const { data } = await clienteAxios.post(`/proyectos`, proyecto, config)
             setProyectos([...proyectos, {...data.proyecto } ]) // agrego al state proyectos el nuevo proyecto creado
@@ -74,6 +101,7 @@ const ProyectosProvider = ({children}) => {
             console.log(error)
         }
     }
+
     //para la vista detalle de un proyecto
     const obtenerProyecto = async id => {
         setCargando(true)
