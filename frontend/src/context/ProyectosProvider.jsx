@@ -9,8 +9,6 @@ const ProyectosProvider = ({children}) => {
     const [ proyecto, setProyecto ] = useState({})
     const [ alerta, setAlerta ] = useState({})
     const [ cargando, setCargando ] = useState(false)
-
-
     const navigate = useNavigate()
     //use effect que funciona para la vista de listado de proyectos
     useEffect(() => {
@@ -63,10 +61,29 @@ const ProyectosProvider = ({children}) => {
         }
     }
 
+    const guardarProyecto = async (proyecto, config) => {
+        try {
+            const { data } = await clienteAxios.post(`/proyectos`, proyecto, config)
+            setProyectos([...proyectos, {...data.proyecto } ]) // agrego al state proyectos el nuevo proyecto creado
+            setAlerta({
+                msg: 'El proyecto se creó correctamente ',
+                error: false
+            })
+            //despues de  3 segundos lo mando al listado de proyectos
+            setTimeout(() => {
+                setAlerta({})
+                navigate('/proyectos')
+            }, 3000)
+            // setProyectos( data.usuario )
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const actualizarProyecto = async (proyecto, config) => {
         try {
             const { data } = await clienteAxios.put(`/proyectos/${proyecto.id}`, proyecto, config )
-            const proyectosActualizados = proyectos.map( proyectoState => proyecto._id === data.proyecto._id ? data.proyecto : proyectoState )
+            const proyectosActualizados = proyectos.map( proyecto => proyecto._id === data.proyecto._id ? data.proyecto : proyecto )
             setProyectos(proyectosActualizados) // agrego al state proyectos con el que ya está actualizado
             setAlerta({
                 msg: 'El proyecto se actualizó correctamente',
@@ -84,17 +101,23 @@ const ProyectosProvider = ({children}) => {
     }
 
     const eliminarProyecto = async id => {
-        console.log('eliminando')
-    }
+        const token = localStorage.getItem('token')
+        if(!token) return
 
-    const guardarProyecto = async (proyecto, config) => {
+        const config = {
+            headers:{
+                'Conten-Type': 'application/json', 
+                Authorization: `Bearer ${token}`
+            }
+        }
+
         try {
-            const { data } = await clienteAxios.post(`/proyectos`, proyecto, config)
-            setProyectos([...proyectos, {...data.proyecto } ]) // agrego al state proyectos el nuevo proyecto creado
-            setAlerta({
-                msg: 'El proyecto se creó correctamente ',
-                error: false
-            })
+            const { data } = await clienteAxios.delete(`/proyectos/${id}`, config)
+            //sincronizamos el state
+            const proyectosActualizados = proyectos.filter( proyecto =>  proyecto._id !== id )
+            setProyectos(proyectosActualizados) // agrego al state proyectos con el que ya está actualizado
+            //mostramos el alerta del borrado
+            setAlerta({ msg: data.msg, error: false })
             //despues de  3 segundos lo mando al listado de proyectos
             setTimeout(() => {
                 setAlerta({})

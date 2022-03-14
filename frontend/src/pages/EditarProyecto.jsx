@@ -15,9 +15,9 @@ const EditarProyecto = () => {
         obtenerProyecto(id) 
     }, [])
 
-    const handleClick = () => {
+    const handleClick = async () => {
         if(confirm('¿Desea eliminar este proyecto?')){
-            eliminarProyecto(params.id) // el la url se tiene el id del proyecto o desde el objeto proyecto._id
+            await eliminarProyecto(params.id) // el la url se tiene el id del proyecto o desde el objeto proyecto._id
         }
     }
 
