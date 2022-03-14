@@ -37,10 +37,9 @@ const obtenerProyecto = async (req, res) => {
         return res.status(401).json( { msg: error.message} )
     }
     //obtener las tareas del proyeccto
+   // const tareas = await Tarea.find().where('proyecto').equals(proyecto._id)
 
-    const tareas = await Tarea.find().where('proyecto').equals(proyecto._id)
-
-    return res.status(200).json( {proyecto, tareas} )
+    return res.status(200).json( {ok: true, proyecto } )
 
 }
 

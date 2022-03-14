@@ -6,11 +6,11 @@ const ProyectosContext = createContext()
 
 const ProyectosProvider = ({children}) => {
     const [ proyectos, setProyectos ] = useState([])
+    const [ proyecto, setProyecto ] = useState({})
     const [ alerta, setAlerta ] = useState({})
     const navigate = useNavigate()
-
+    //use effect que funciona para la vista de listado de proyectos
     useEffect(() => {
-
         const obtenerProyectos = async () => {
             const token = localStorage.getItem('token')
         
@@ -40,7 +40,7 @@ const ProyectosProvider = ({children}) => {
             setAlerta({})
         }, 5000)
     }
-
+    //para guardar un proyecto
     const submitProyecto = async proyecto => {
 
         const token = localStorage.getItem('token')
@@ -71,6 +71,25 @@ const ProyectosProvider = ({children}) => {
             console.log(error)
         }
     }
+    //para la vista detalle de un proyecto
+    const obtenerProyecto = async id => {
+        const token = localStorage.getItem('token')
+        if(!token) return
+        const config = {
+            headers:{
+                'Conten-Type': 'application/json', 
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        try {
+            const { data } = await clienteAxios(`/proyectos/${id}`, config)
+            console.log( data )
+            setProyecto(data.proyecto) // pongo el proyecto en el state
+        } catch (error) {
+            console.log(error) 
+        }
+    }
 
     return (
         <ProyectosContext.Provider
@@ -78,7 +97,8 @@ const ProyectosProvider = ({children}) => {
                 proyectos, //state
                 alerta, //state
                 monstrarAlerta, //funcion modificador del state alerta
-                submitProyecto //funcion para guardar el proyecto al back
+                submitProyecto, //funcion para guardar el proyecto al back
+                obtenerProyecto, // funcion para obtener los datos de un proyecto
             }}
         >
             {children}
