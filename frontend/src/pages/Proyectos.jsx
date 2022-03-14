@@ -3,11 +3,14 @@ import useProyectos from '../hooks/useProyectos'
 
 const Proyectos = () => {
   const { proyectos } = useProyectos()
+  console.log(proyectos)
   return (
     <>
     <h1 className='text-4xl font-black'>Proyectos</h1>
-    <div>
-      Lorem ipsum, dolor sit amet consectetur adipisicing elit. Reiciendis error numquam consequuntur, harum, ipsa laborum odio voluptates deleniti culpa tenetur ipsam autem maxime sunt, voluptatem omnis quaerat suscipit quia praesentium.
+    <div className='bg-white shadow mt-10 rounded-lg p-5'>
+      {
+        proyectos.length ? <p className='text-center text-gray-600 uppercase'>Si hay proyectos</p> : <p className='text-center text-gray-600 uppercase'>No hay proyectos aun</p>
+      }
     </div>
     </>
   )

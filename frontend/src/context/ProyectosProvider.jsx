@@ -9,6 +9,30 @@ const ProyectosProvider = ({children}) => {
     const [ alerta, setAlerta ] = useState({})
     const navigate = useNavigate()
 
+    useEffect(() => {
+
+        const obtenerProyectos = async () => {
+            const token = localStorage.getItem('token')
+        
+            if(!token) return
+
+            const config = {
+                headers:{
+                    'Conten-Type': 'application/json', 
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            try {
+                const { data } = await clienteAxios(`/proyectos`, config)
+                setProyectos(data.proyectos) // pongo los proyectos en el state
+            } catch (error) {
+               console.log(error) 
+            }
+        }
+        obtenerProyectos()
+    }, [])// se ejecuta una sola vez
+    
     const monstrarAlerta = alerta => {
         setAlerta(alerta)
         //despues de unos 5 segundos, desaparecer alerta
