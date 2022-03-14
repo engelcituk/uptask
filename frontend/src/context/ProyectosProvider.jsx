@@ -8,6 +8,9 @@ const ProyectosProvider = ({children}) => {
     const [ proyectos, setProyectos ] = useState([])
     const [ proyecto, setProyecto ] = useState({})
     const [ alerta, setAlerta ] = useState({})
+    const [ cargando, setCargando ] = useState(false)
+
+
     const navigate = useNavigate()
     //use effect que funciona para la vista de listado de proyectos
     useEffect(() => {
@@ -31,7 +34,7 @@ const ProyectosProvider = ({children}) => {
             }
         }
         obtenerProyectos()
-    }, [])// se ejecuta una sola vez
+    }, [])// se ejecuta una sola vez, por eso está vacío
     
     const monstrarAlerta = alerta => {
         setAlerta(alerta)
@@ -73,8 +76,12 @@ const ProyectosProvider = ({children}) => {
     }
     //para la vista detalle de un proyecto
     const obtenerProyecto = async id => {
+        setCargando(true)
         const token = localStorage.getItem('token')
-        if(!token) return
+        if(!token) {
+            setCargando(false)
+            return
+        }
         const config = {
             headers:{
                 'Conten-Type': 'application/json', 
@@ -83,11 +90,12 @@ const ProyectosProvider = ({children}) => {
         }
 
         try {
-            const { data } = await clienteAxios(`/proyectos/${id}`, config)
-            console.log( data )
+            const { data } = await clienteAxios(`/proyectos/${id}`, config )
             setProyecto(data.proyecto) // pongo el proyecto en el state
         } catch (error) {
             console.log(error) 
+        } finally{
+            setCargando(false)
         }
     }
 
@@ -96,6 +104,8 @@ const ProyectosProvider = ({children}) => {
             value={{
                 proyectos, //state
                 alerta, //state
+                proyecto, // state
+                cargando, // state
                 monstrarAlerta, //funcion modificador del state alerta
                 submitProyecto, //funcion para guardar el proyecto al back
                 obtenerProyecto, // funcion para obtener los datos de un proyecto
