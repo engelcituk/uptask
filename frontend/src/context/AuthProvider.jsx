@@ -30,7 +30,11 @@ const AuthProvider = ({children}) => {
                 const { data } = await clienteAxios(`/usuarios/perfil`, config)
                 setAuth(data.usuario )
                 // en caso de que el usuario, esté autenticado, lo mando a la ruta protegida proyectos u los restantes
-                navigate(location.pathname ) 
+                if( location.pathname === '/' ) {
+                    navigate('/proyectos' ) 
+                } else {
+                    navigate(location.pathname) 
+                }
             } catch (error) {
                 setAuth({})// si falla algo objeto vacío para auth
                 console.log(error)
