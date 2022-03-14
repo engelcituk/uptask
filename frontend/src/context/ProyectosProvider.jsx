@@ -83,6 +83,10 @@ const ProyectosProvider = ({children}) => {
         }
     }
 
+    const eliminarProyecto = async id => {
+        console.log('eliminando')
+    }
+
     const guardarProyecto = async (proyecto, config) => {
         try {
             const { data } = await clienteAxios.post(`/proyectos`, proyecto, config)
@@ -137,6 +141,7 @@ const ProyectosProvider = ({children}) => {
                 monstrarAlerta, //funcion modificador del state alerta
                 submitProyecto, //funcion para guardar el proyecto al back
                 obtenerProyecto, // funcion para obtener los datos de un proyecto
+                eliminarProyecto, //Funcion para eliminar un proyecto por el id
             }}
         >
             {children}
