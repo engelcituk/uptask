@@ -1,15 +1,29 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import useProyectos from '../hooks/useProyectos'
 import Alerta from '../components/Alerta'
 
 const FormularioProyecto = () => {
+    const [ id, setId ]= useState(null)
     const [ nombre, setNombre ] = useState('')
     const [ descripcion, setDescripcion] = useState('')
     const [ fechaEntrega, setFechaEntrega ] = useState('')
     const [ cliente, setCliente ] = useState('')
-    const { monstrarAlerta, alerta, submitProyecto } = useProyectos()
+    const { monstrarAlerta, alerta, submitProyecto, proyecto } = useProyectos()
+    const params = useParams()
     const { msg } = alerta
 
+    useEffect(() => {
+        if( params.id ){
+            setId(proyecto._id)
+            // no aplicar desestructuración porque las variables ya estan definidas para el formulario de crear
+            setNombre(proyecto.nombre) 
+            setDescripcion(proyecto.descripcion)
+            setFechaEntrega(proyecto.fechaEntrega?.split('T')[0]) // si ya viene valor se hace el split, sino ocurre error
+            setCliente(proyecto.cliente)
+        }
+    }, [params]) //estará vigialando a params
+    
     const handleSubmit = async e => {
         e.preventDefault()
 
@@ -94,7 +108,7 @@ const FormularioProyecto = () => {
             </div>
             <input
                 type="submit"
-                value="Crear proyecto"
+                value={id ? 'Actualizar proyecto' : 'Crear proyecto' }
                 className="bg-sky-600 w-full p-3 mb-5 uppercase font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors hover:cursor-pointer "
             />
         </form>
