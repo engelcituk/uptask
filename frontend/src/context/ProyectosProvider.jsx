@@ -57,17 +57,17 @@ const ProyectosProvider = ({children}) => {
         }
 
         if( proyecto.id ){
-            actualizarProyecto(proyecto, config)
+            await actualizarProyecto(proyecto, config)
         } else {
-            guardarProyecto(proyecto, config)
+            await guardarProyecto(proyecto, config)
         }
     }
 
     const actualizarProyecto = async (proyecto, config) => {
         try {
             const { data } = await clienteAxios.put(`/proyectos/${proyecto.id}`, proyecto, config )
-            const proyectosPrevios = proyectos.filter( proyecto => proyecto._id !== proyecto.id)
-            setProyectos([...proyectosPrevios, {...data.proyecto } ]) // agrego al state proyectos el nuevo proyecto creado
+            const proyectosActualizados = proyectos.map( proyectoState => proyecto._id === data.proyecto._id ? data.proyecto : proyectoState )
+            setProyectos(proyectosActualizados) // agrego al state proyectos con el que ya está actualizado
             setAlerta({
                 msg: 'El proyecto se actualizó correctamente',
                 error: false
