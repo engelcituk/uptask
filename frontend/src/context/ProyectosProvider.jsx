@@ -160,6 +160,11 @@ const ProyectosProvider = ({children}) => {
         setModalFormularioTarea( !modalFormularioTarea )
     }
 
+    const submitTarea = async tarea => {
+        console.log(tarea)
+    }
+
+
     return (
         <ProyectosContext.Provider
             value={{
@@ -173,6 +178,7 @@ const ProyectosProvider = ({children}) => {
                 obtenerProyecto, // funcion para obtener los datos de un proyecto
                 eliminarProyecto, //Funcion para eliminar un proyecto por el id
                 handleModalTarea, // función para ocultar/mostrar modal crear/editar tareas
+                submitTarea, // funcion para guardar tarea
             }}
         >
             {children}
