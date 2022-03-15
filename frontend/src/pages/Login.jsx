@@ -8,6 +8,8 @@ const Login = () => {
   const [ email, setEmail ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ alerta, setAlerta ] = useState({})
+  const navigate = useNavigate() // para redirección
+  
   const { msg } = alerta
 
   const { setAuth } = useAuth()
@@ -31,6 +33,7 @@ const Login = () => {
       setAlerta({})
       localStorage.setItem('token', usuario.token )
       setAuth(usuario)
+      navigate('/proyectos')
     } catch (error) {
       if(error.response){
         setAlerta({msg: error.response.data.msg, error: true })
