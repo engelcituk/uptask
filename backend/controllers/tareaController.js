@@ -10,6 +10,7 @@ const agregarTarea = async (req, res) => {
     }
 
     const existeProyecto = await Proyecto.findById(proyecto)
+
     if(!existeProyecto){
         const error = new Error('El proyecto no existe')
         return res.status(404).json( {ok: false, msg: error.message } )
@@ -22,6 +23,9 @@ const agregarTarea = async (req, res) => {
 
     try {
         const tareaAlmacenada = await Tarea.create( req.body )
+        //almacenar el id de la tarea en el proyecto
+        existeProyecto.tareas.push( tareaAlmacenada._id )
+        await existeProyecto.save()
         return res.status(201).json( {ok: true, tarea: tareaAlmacenada } )
     } catch (error) {
         console.log(error)
