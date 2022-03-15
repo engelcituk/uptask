@@ -9,6 +9,8 @@ const ProyectosProvider = ({children}) => {
     const [ proyecto, setProyecto ] = useState({})
     const [ alerta, setAlerta ] = useState({})
     const [ cargando, setCargando ] = useState(false)
+    const [ modalFormularioTarea, setModalFormularioTarea ] = useState(false)
+
     const navigate = useNavigate()
     //use effect que funciona para la vista de listado de proyectos
     useEffect(() => {
@@ -154,6 +156,10 @@ const ProyectosProvider = ({children}) => {
         }
     }
 
+    const handleModalTarea = () => {
+        setModalFormularioTarea( !modalFormularioTarea )
+    }
+
     return (
         <ProyectosContext.Provider
             value={{
@@ -161,10 +167,12 @@ const ProyectosProvider = ({children}) => {
                 alerta, //state
                 proyecto, // state
                 cargando, // state
+                modalFormularioTarea, // state
                 monstrarAlerta, //funcion modificador del state alerta
                 submitProyecto, //funcion para guardar el proyecto al back
                 obtenerProyecto, // funcion para obtener los datos de un proyecto
                 eliminarProyecto, //Funcion para eliminar un proyecto por el id
+                handleModalTarea, // función para ocultar/mostrar modal crear/editar tareas
             }}
         >
             {children}
