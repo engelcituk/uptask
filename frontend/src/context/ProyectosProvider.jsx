@@ -6,6 +6,7 @@ const ProyectosContext = createContext()
 
 const ProyectosProvider = ({children}) => {
     const [ proyectos, setProyectos ] = useState([])
+    const [ tareas, setTareas ] = useState([])
     const [ proyecto, setProyecto ] = useState({})
     const [ alerta, setAlerta ] = useState({})
     const [ cargando, setCargando ] = useState(false)
@@ -161,7 +162,30 @@ const ProyectosProvider = ({children}) => {
     }
 
     const submitTarea = async tarea => {
-        console.log(tarea)
+        const token = localStorage.getItem('token')
+        if(!token) return
+
+        const config = {
+            headers:{
+                'Conten-Type': 'application/json', 
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        try {
+            const { data } = await clienteAxios.post(`/tareas`, tarea, config)
+            setTareas([...tareas, {...data.tarea } ]) // agrego al state tareas, la tarea creada
+            setAlerta({
+                msg: 'La tarea se creó correctamente ',
+                error: false
+            })
+            //despues de  3 segundos reseteo alerta
+            setTimeout(() => {
+                setAlerta({})
+            }, 3000)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
 
