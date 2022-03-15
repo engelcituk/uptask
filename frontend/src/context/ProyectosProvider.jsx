@@ -6,7 +6,6 @@ const ProyectosContext = createContext()
 
 const ProyectosProvider = ({children}) => {
     const [ proyectos, setProyectos ] = useState([])
-    const [ tareas, setTareas ] = useState([])
     const [ proyecto, setProyecto ] = useState({})
     const [ alerta, setAlerta ] = useState({})
     const [ cargando, setCargando ] = useState(false)
@@ -174,7 +173,6 @@ const ProyectosProvider = ({children}) => {
 
         try {
             const { data } = await clienteAxios.post(`/tareas`, tarea, config)
-            setTareas([...tareas, {...data.tarea } ]) // agrego al state tareas, la tarea creada
             setAlerta({
                 msg: 'La tarea se creó correctamente ',
                 error: false

@@ -14,8 +14,6 @@ function Proyecto() {
     useEffect(() => {
         obtenerProyecto(id) 
     }, [])
-    
-
     return (
         cargando ? <Spinner/> : (
             <>
