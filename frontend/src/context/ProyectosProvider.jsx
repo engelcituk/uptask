@@ -12,30 +12,30 @@ const ProyectosProvider = ({children}) => {
     const [ modalFormularioTarea, setModalFormularioTarea ] = useState(false)
 
     const navigate = useNavigate()
-    //use effect que funciona para la vista de listado de proyectos
     useEffect(() => {
-        const obtenerProyectos = async () => {
-            const token = localStorage.getItem('token')
-        
-            if(!token) return
+        obtenerProyectos() // obtengo los proyectos
+    }, [])
+    //para obtener proyectos
+    const obtenerProyectos = async () => {
+        const token = localStorage.getItem('token')
+    
+        if(!token) return
 
-            const config = {
-                headers:{
-                    'Conten-Type': 'application/json', 
-                    Authorization: `Bearer ${token}`
-                }
-            }
-
-            try {
-                const { data } = await clienteAxios(`/proyectos`, config)
-                setProyectos(data.proyectos) // pongo los proyectos en el state
-            } catch (error) {
-               console.log(error) 
+        const config = {
+            headers:{
+                'Conten-Type': 'application/json', 
+                Authorization: `Bearer ${token}`
             }
         }
-        obtenerProyectos()
-    }, [])// se ejecuta una sola vez, por eso está vacío
-    
+
+        try {
+            const { data } = await clienteAxios(`/proyectos`, config)
+            setProyectos(data.proyectos) // pongo los proyectos en el state
+        } catch (error) {
+            console.log(error) 
+        }
+    }
+    //para alerta success o error
     const monstrarAlerta = alerta => {
         setAlerta(alerta)
         //despues de unos 5 segundos, desaparecer alerta
@@ -130,7 +130,6 @@ const ProyectosProvider = ({children}) => {
             console.log(error)
         }
     }
-
     //para la vista detalle de un proyecto
     const obtenerProyecto = async id => {
         setCargando(true)
@@ -177,15 +176,19 @@ const ProyectosProvider = ({children}) => {
                 msg: 'La tarea se creó correctamente ',
                 error: false
             })
+            //Agregar la tarea al state
+            const proyectoActualizado = { ...proyecto }
+            proyectoActualizado.tareas = [...proyecto.tareas, data.tarea ]
+            setProyecto(proyectoActualizado)
             //despues de  3 segundos reseteo alerta
             setTimeout(() => {
                 setAlerta({})
-            }, 3000)
+                setModalFormularioTarea( false )
+            }, 2000)
         } catch (error) {
             console.log(error)
         }
     }
-
 
     return (
         <ProyectosContext.Provider
@@ -195,6 +198,7 @@ const ProyectosProvider = ({children}) => {
                 proyecto, // state
                 cargando, // state
                 modalFormularioTarea, // state
+                obtenerProyectos, // función para obtener proyectos
                 monstrarAlerta, //funcion modificador del state alerta
                 submitProyecto, //funcion para guardar el proyecto al back
                 obtenerProyecto, // funcion para obtener los datos de un proyecto

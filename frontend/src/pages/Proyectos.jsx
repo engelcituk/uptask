@@ -1,10 +1,16 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
+
 import useProyectos from '../hooks/useProyectos'
 //componente
 import PreviewProyecto from '../components/PreviewProyecto'
 
 const Proyectos = () => {
-  const { proyectos } = useProyectos()
+  const { proyectos, obtenerProyectos } = useProyectos()
+    //use effect que funciona para la vista de listado de proyectos
+  useEffect(() => {
+    obtenerProyectos() // obtengo los proyectos
+}, []) // vacio porque se ejecuta solo una vez
+
   return (
     <>
     <h1 className='text-4xl font-black'>Proyectos</h1>
