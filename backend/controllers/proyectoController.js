@@ -1,5 +1,6 @@
 import Proyecto from '../models/Proyecto.js'
-import Tarea from '../models/Tarea.js'
+import Usuario from '../models/Usuario.js'
+
 
 const obtenerProyectos = async (req, res) => {
     const proyectos = await Proyecto.find().where('creador').equals(req.usuario).select('-tareas')
@@ -91,12 +92,12 @@ const eliminarProyecto = async (req, res) => {
 
     if(!proyecto){
         const error = new Error('El proyecto no existe')
-        return res.status(404).json( { msg: error.message } )
+        return res.status(404).json( {ok: false, msg: error.message } )
     }
 
     if( proyecto.creador.toString() !== req.usuario._id.toString() ){
         const error = new Error('No puedes actualizar proyecto si no eres creador')
-        return res.status(401).json( { msg: error.message} )
+        return res.status(401).json( {ok: false, msg: error.message} )
     }
 
     try {
@@ -107,6 +108,22 @@ const eliminarProyecto = async (req, res) => {
     }
 }
 
+const buscarColaborador = async (req, res) => {
+    const { email } = req.body
+
+    const usuario = await Usuario.findOne({email}).select('-password -createdAt -confirmado -updatedAt -__v -token')
+
+
+    if(!usuario){
+        const error = new Error('El usuario no existe')
+        return res.status(404).json( {ok: false, msg: error.message, usuario: null } )
+    }
+
+    if( usuario ){
+        return res.status(200).json( { ok: true, msg: 'Usuario encontrado', usuario } )
+    }
+
+}
 
 const agregarColaborador = async (req, res) => {
   
@@ -120,6 +137,7 @@ const eliminarColaborador = async (req, res) => {
 
 export {
     agregarColaborador,
+    buscarColaborador,
     editarProyecto,
     eliminarColaborador,
     eliminarProyecto,
