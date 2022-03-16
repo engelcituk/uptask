@@ -84,7 +84,7 @@ const actualizarTarea = async (req, res) => {
 
     try {
         const tareaActualizado = await tarea.save()
-        return res.json(tareaActualizado)
+        return res.status(200).json({ok:true, tarea: tareaActualizado})
     } catch (error) {
         console.log(error)
     }

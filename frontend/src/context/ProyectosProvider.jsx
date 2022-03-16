@@ -171,7 +171,16 @@ const ProyectosProvider = ({children}) => {
                 Authorization: `Bearer ${token}`
             }
         }
+        if(tarea?.id){
+            await actualizarTarea(tarea, config)
+        } else {
+            await guardarTarea(tarea, config)
+        }
+    
+        
+    }
 
+    const guardarTarea = async (tarea, config) => {
         try {
             const { data } = await clienteAxios.post(`/tareas`, tarea, config)
             setAlerta({
@@ -181,6 +190,28 @@ const ProyectosProvider = ({children}) => {
             //Agregar la tarea al state
             const proyectoActualizado = { ...proyecto }
             proyectoActualizado.tareas = [...proyecto.tareas, data.tarea ]
+            setProyecto(proyectoActualizado)
+            //despues de  3 segundos reseteo alerta
+            setTimeout(() => {
+                setAlerta({})
+                setModalFormularioTarea( false )
+            }, 2000)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const actualizarTarea = async (tarea, config) => {
+        try {
+            const { data } = await clienteAxios.put(`/tareas/${tarea.id}`, tarea, config )
+            setAlerta({
+                msg: 'La tarea se actualizó correctamente ',
+                error: false
+            })
+            //Agregar la tarea al state
+            const proyectoActualizado = { ...proyecto }
+            const tareas = proyectoActualizado.tareas.map( tarea => tarea._id === data.tarea._id ? data.tarea : tarea )
+            proyectoActualizado.tareas = [...tareas ]
             setProyecto(proyectoActualizado)
             //despues de  3 segundos reseteo alerta
             setTimeout(() => {
