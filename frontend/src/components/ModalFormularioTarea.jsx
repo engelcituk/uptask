@@ -10,6 +10,7 @@ const ModalFormularioTarea = () => {
 
     const params = useParams()
     const { modalFormularioTarea, alerta, handleModalTarea, monstrarAlerta, submitTarea, tarea } = useProyectos() //uso del hook para trabajar con ProyectosProvider
+    const [ id, setId ] = useState(null)
     const [ nombre, setNombre ] = useState('')
     const [ descripcion, setDescripcion ] = useState('')
     const [ prioridad, setPrioridad ] = useState('')
@@ -17,8 +18,20 @@ const ModalFormularioTarea = () => {
     const { msg } = alerta
 
     useEffect(() => {
-        console.log(tarea)
-    }, [tarea]) //esto hace que el modal se renderice de nuevo, debido al cabio del state tarea
+        if(tarea?._id){ //si hay tarea seteo valores
+            setId(tarea._id)
+            setNombre(tarea.nombre)
+            setDescripcion(tarea.descripcion)
+            setPrioridad(tarea.prioridad)
+            setFechaEntrega(tarea.fechaEntrega?.split('T')[0])
+        } else {
+            setId(null)
+            setNombre('')
+            setDescripcion('')
+            setPrioridad('')
+            setFechaEntrega('')
+        }
+    }, [tarea]) //esto hace que el modal se renderice de nuevo, debido al cabio del state tarea que se vigila
     
     const handleSubmit = async e => {
         e.preventDefault()
@@ -90,7 +103,7 @@ const ModalFormularioTarea = () => {
                             <div className="sm:flex sm:items-start">
                                 <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                                     <Dialog.Title as="h3" className="text-lg leading-6 font-bold text-gray-900">
-                                       Crear tarea
+                                        { id ? 'Editar tarea' : 'Nueva tarea'}
                                     </Dialog.Title>
                                     {
                                         msg &&  <Alerta alerta={alerta}/>
@@ -165,7 +178,7 @@ const ModalFormularioTarea = () => {
 
                                         <input
                                             type="submit"
-                                            value='Crear tarea'
+                                            value= { id ? 'Guardar cambios' : 'Guardar tarea'}
                                             className="bg-sky-600 w-full p-3 uppercase font-bold text-white rounded cursor-pointer hover:bg-sky-700 transition-colors hover:cursor-pointer text-sm"
                                         />
 
