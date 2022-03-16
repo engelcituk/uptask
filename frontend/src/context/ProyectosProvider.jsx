@@ -11,6 +11,8 @@ const ProyectosProvider = ({children}) => {
     const [ cargando, setCargando ] = useState(false)
     const [ modalFormularioTarea, setModalFormularioTarea ] = useState(false)
     const [ tarea, setTarea ] = useState({})
+    const [ modalEliminarTarea, setModalEliminarTarea ] = useState(false)
+
 
     const navigate = useNavigate()
     useEffect(() => {
@@ -156,11 +158,6 @@ const ProyectosProvider = ({children}) => {
         }
     }
 
-    const handleModalTarea = () => {
-        setModalFormularioTarea( !modalFormularioTarea )
-        setTarea({})
-    }
-
     const submitTarea = async tarea => {
         const token = localStorage.getItem('token')
         if(!token) return
@@ -222,12 +219,20 @@ const ProyectosProvider = ({children}) => {
             console.log(error)
         }
     }
+    const handleModalTarea = () => {
+        setModalFormularioTarea( !modalFormularioTarea )
+        setTarea({})
+    }
 
     const handleModalEditarTarea = tarea => {
         setTarea(tarea)
         setModalFormularioTarea( true )
-
     } 
+
+    const handleModalEliminarTarea = tarea => {
+        setTarea(tarea)
+        setModalEliminarTarea( !modalEliminarTarea )
+    }
 
     return (
         <ProyectosContext.Provider
@@ -237,6 +242,7 @@ const ProyectosProvider = ({children}) => {
                 proyecto, // state
                 cargando, // state
                 modalFormularioTarea, // state
+                modalEliminarTarea,// state
                 tarea, //state
                 obtenerProyectos, // función para obtener proyectos
                 monstrarAlerta, //funcion modificador del state alerta
@@ -246,6 +252,7 @@ const ProyectosProvider = ({children}) => {
                 handleModalTarea, // función para ocultar/mostrar modal crear/editar tareas
                 submitTarea, // funcion para guardar tarea
                 handleModalEditarTarea, // función para actualizar la tarea
+                handleModalEliminarTarea, // función para abrir modal de eliminación de una tarea
             }}
         >
             {children}
