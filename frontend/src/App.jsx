@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route  } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 //Layouts
 import AuthLayout from './layouts/AuthLayout'
 import RutaProtegida from './layouts/RutaProtegida'
@@ -11,6 +11,7 @@ import ConfirmarCuenta from './pages/ConfirmarCuenta'
 //private pages
 import Proyectos from './pages/Proyectos'
 import NuevoProyecto from './pages/NuevoProyecto'
+import NuevoColaborador from './pages/NuevoColaborador'
 import Proyecto from './pages/Proyecto'
 import EditarProyecto from './pages/EditarProyecto'
 // providers para  States
@@ -34,6 +35,7 @@ function App() {
             <Route path='/proyectos' element={<RutaProtegida/>}>
               <Route index element={<Proyectos/>} />
               <Route path='crear-proyecto' element={<NuevoProyecto/>} />
+              <Route path='nuevo-colaborador/:id' element={<NuevoColaborador/>} />
               <Route path=':id' element={<Proyecto/>} />
               <Route path='editar/:id' element={<EditarProyecto/>} />
 

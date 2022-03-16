@@ -12,7 +12,7 @@ function Proyecto() {
     const params = useParams()
     const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta } = useProyectos() //uso del hook para trabajar con el ProyectosProvider
     const { id } = params
-    const { nombre } = proyecto
+    const { nombre, _id } = proyecto
     const { msg } = alerta
 
     // 
@@ -64,6 +64,15 @@ function Proyecto() {
                         <p className='text-center my-5 p-10'>No hay tareas en este proyecto</p>
                     }
                 </div>
+                <div className='flex items-center justify-between'>
+                    <p className='font-bold text-xl mt-10'>Colaboradores</p>
+                    <Link
+                        to={`/proyectos/nuevo-colaborador/${_id}`}
+                        className='text-gray-400 hover:text-black uppercase font-bold'
+                    >
+                    Añadir</Link>
+                </div>
+
                 <ModalFormularioTarea/>
                 <ModalEliminarTarea/>
             </>
