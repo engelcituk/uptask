@@ -248,6 +248,10 @@ const ProyectosProvider = ({children}) => {
             console.log(error)
         }
     }
+    const submitColaborador = async email => {
+        console.log(email)
+    }
+
     const handleModalTarea = () => {
         setModalFormularioTarea( !modalFormularioTarea )
         setTarea({})
@@ -273,16 +277,17 @@ const ProyectosProvider = ({children}) => {
                 modalFormularioTarea, // state
                 modalEliminarTarea,// state
                 tarea, //state
-                obtenerProyectos, // función para obtener proyectos
-                monstrarAlerta, //funcion modificador del state alerta
-                submitProyecto, //funcion para guardar el proyecto al back
-                obtenerProyecto, // funcion para obtener los datos de un proyecto
                 eliminarProyecto, //Funcion para eliminar un proyecto por el id
-                handleModalTarea, // función para ocultar/mostrar modal crear/editar tareas
-                submitTarea, // funcion para guardar tarea
+                eliminarTarea, // función para eliminar tarea desde el modal
                 handleModalEditarTarea, // función para actualizar la tarea
                 handleModalEliminarTarea, // función para abrir modal de eliminación de una tarea
-                eliminarTarea, // función para eliminar tarea desde el modal
+                handleModalTarea, // función para ocultar/mostrar modal crear/editar tareas
+                monstrarAlerta, //funcion modificador del state alerta
+                obtenerProyecto, // funcion para obtener los datos de un proyecto
+                obtenerProyectos, // función para obtener proyectos
+                submitColaborador, // funcion para añadir colaborador
+                submitProyecto, //funcion para guardar el proyecto al back
+                submitTarea, // funcion para guardar tarea
             }}
         >
             {children}
