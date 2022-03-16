@@ -4,14 +4,17 @@ import useProyectos from '../hooks/useProyectos'
 import Spinner from '../components/Spinner'
 import ModalFormularioTarea from '../components/ModalFormularioTarea'
 import ModalEliminarTarea from '../components/ModalEliminarTarea'
+import Alerta from '../components/Alerta'
 
 import Tarea from '../components/Tarea'
 
 function Proyecto() {
     const params = useParams()
-    const { obtenerProyecto, proyecto, cargando, handleModalTarea } = useProyectos() //uso del hook para trabajar con el ProyectosProvider
+    const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta } = useProyectos() //uso del hook para trabajar con el ProyectosProvider
     const { id } = params
-    const { nombre, } = proyecto
+    const { nombre } = proyecto
+    const { msg } = alerta
+
     // 
     useEffect(() => {
         obtenerProyecto(id) 
@@ -42,6 +45,13 @@ function Proyecto() {
                     Nueva tarea
                 </button>
                 <p className='font-bold text-xl mt-10'>Tareas del proyecto</p>
+                <div className='flex justify-center'>
+                    <div className='w-full md:w-1/3 lg:w-1/4'>
+                        {
+                            msg &&  <Alerta alerta={alerta}/>
+                        }
+                    </div>
+                </div>
                 <div className='bg-white shadow mt-10 rounded'>
                     {
                         proyecto.tareas?.length ?

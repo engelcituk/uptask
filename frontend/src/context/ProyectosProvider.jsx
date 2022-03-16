@@ -219,6 +219,35 @@ const ProyectosProvider = ({children}) => {
             console.log(error)
         }
     }
+    const eliminarTarea = async id => {
+        const token = localStorage.getItem('token')
+        if(!token) return
+
+        const config = {
+            headers:{
+                'Conten-Type': 'application/json', 
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        try {
+            const { data } = await clienteAxios.delete(`/tareas/${id}`, config)
+            setAlerta({ msg: data.msg, error: false })
+            //sincronizamos el state
+            const proyectoActualizado = { ...proyecto }
+            const tareas = proyectoActualizado.tareas.filter( tarea => tarea._id !== id)
+            proyectoActualizado.tareas = [ ...tareas ]
+            setProyecto(proyectoActualizado)
+            setTarea({})
+            setModalEliminarTarea( false )
+            setTimeout(() => {
+                setAlerta({})
+            }, 3000)
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
     const handleModalTarea = () => {
         setModalFormularioTarea( !modalFormularioTarea )
         setTarea({})
@@ -253,6 +282,7 @@ const ProyectosProvider = ({children}) => {
                 submitTarea, // funcion para guardar tarea
                 handleModalEditarTarea, // función para actualizar la tarea
                 handleModalEliminarTarea, // función para abrir modal de eliminación de una tarea
+                eliminarTarea, // función para eliminar tarea desde el modal
             }}
         >
             {children}
