@@ -279,6 +279,10 @@ const ProyectosProvider = ({children}) => {
         }
     }
 
+    const agregarColaborador = async email => {
+        console.log(email)
+    }
+
     const handleModalTarea = () => {
         setModalFormularioTarea( !modalFormularioTarea )
         setTarea({})
@@ -297,13 +301,15 @@ const ProyectosProvider = ({children}) => {
     return (
         <ProyectosContext.Provider
             value={{
-                proyectos, //state
                 alerta, //state
-                proyecto, // state
                 cargando, // state
-                modalFormularioTarea, // state
+                colaborador, // state
                 modalEliminarTarea,// state
+                modalFormularioTarea, // state
+                proyecto, // state
+                proyectos, //state
                 tarea, //state
+                agregarColaborador, // funcion para agregar colaborador
                 eliminarProyecto, //Funcion para eliminar un proyecto por el id
                 eliminarTarea, // función para eliminar tarea desde el modal
                 handleModalEditarTarea, // función para actualizar la tarea

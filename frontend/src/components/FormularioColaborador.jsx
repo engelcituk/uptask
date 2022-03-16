@@ -4,19 +4,18 @@ import Alerta from '../components/Alerta'
 
 const FormularioColaborador = () => {
     const [ email, setEmail ] = useState('')
-    const { monstrarAlerta, alerta, submitColaborador} = useProyectos()
+    const { monstrarAlerta, alerta, submitColaborador, colaborador } = useProyectos()
     const { msg } = alerta
 
     const handleSubmit = async e => {
         e.preventDefault()
-
         if( [email].includes('') ){
             monstrarAlerta({ msg: 'El campo email es obligatorio', error: true })
             return
         }
         //Pasar los datos hacía el provider
         await submitColaborador(email)
-        setEmail('')
+        // setEmail('')
     }
 
     return (
