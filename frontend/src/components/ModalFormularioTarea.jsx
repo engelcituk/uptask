@@ -9,13 +9,17 @@ const PRIORIDAD = ['Baja', 'Media', 'Alta']
 const ModalFormularioTarea = () => {
 
     const params = useParams()
-    const { modalFormularioTarea, alerta, handleModalTarea, monstrarAlerta, submitTarea } = useProyectos() //uso del hook para trabajar con ProyectosProvider
+    const { modalFormularioTarea, alerta, handleModalTarea, monstrarAlerta, submitTarea, tarea } = useProyectos() //uso del hook para trabajar con ProyectosProvider
     const [ nombre, setNombre ] = useState('')
     const [ descripcion, setDescripcion ] = useState('')
     const [ prioridad, setPrioridad ] = useState('')
     const [ fechaEntrega, setFechaEntrega ] = useState('')
     const { msg } = alerta
 
+    useEffect(() => {
+        console.log(tarea)
+    }, [tarea]) //esto hace que el modal se renderice de nuevo, debido al cabio del state tarea
+    
     const handleSubmit = async e => {
         e.preventDefault()
 

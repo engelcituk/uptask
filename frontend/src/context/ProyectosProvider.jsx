@@ -10,6 +10,7 @@ const ProyectosProvider = ({children}) => {
     const [ alerta, setAlerta ] = useState({})
     const [ cargando, setCargando ] = useState(false)
     const [ modalFormularioTarea, setModalFormularioTarea ] = useState(false)
+    const [ tarea, setTarea ] = useState({})
 
     const navigate = useNavigate()
     useEffect(() => {
@@ -190,6 +191,12 @@ const ProyectosProvider = ({children}) => {
         }
     }
 
+    const handleModalEditarTarea = tarea => {
+        setTarea(tarea)
+        setModalFormularioTarea( true )
+
+    } 
+
     return (
         <ProyectosContext.Provider
             value={{
@@ -198,6 +205,7 @@ const ProyectosProvider = ({children}) => {
                 proyecto, // state
                 cargando, // state
                 modalFormularioTarea, // state
+                tarea, //state
                 obtenerProyectos, // función para obtener proyectos
                 monstrarAlerta, //funcion modificador del state alerta
                 submitProyecto, //funcion para guardar el proyecto al back
@@ -205,6 +213,7 @@ const ProyectosProvider = ({children}) => {
                 eliminarProyecto, //Funcion para eliminar un proyecto por el id
                 handleModalTarea, // función para ocultar/mostrar modal crear/editar tareas
                 submitTarea, // funcion para guardar tarea
+                handleModalEditarTarea, // función para actualizar la tarea
             }}
         >
             {children}

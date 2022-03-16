@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import useProyectos from '../hooks/useProyectos'
 import Spinner from '../components/Spinner'
@@ -8,7 +8,6 @@ import Tarea from '../components/Tarea'
 function Proyecto() {
     const params = useParams()
     const { obtenerProyecto, proyecto, cargando, handleModalTarea } = useProyectos() //uso del hook para trabajar con el ProyectosProvider
-    const [ modal, setModal ] = useState(false)
     const { id } = params
     const { nombre, } = proyecto
     // 
