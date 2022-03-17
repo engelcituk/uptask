@@ -3,7 +3,15 @@ import Usuario from '../models/Usuario.js'
 
 
 const obtenerProyectos = async (req, res) => {
-    const proyectos = await Proyecto.find().where('creador').equals(req.usuario).select('-tareas')
+    // criterio de busqueda para traer los proyectos de usuario creador o los proyectos donde es colaborador
+    const proyectos = await Proyecto.find({
+        $or:[
+            { colaboradores: { $in: req.usuario } },
+            { creador: { $in: req.usuario } },
+        ],
+    }) 
+    .select('-tareas')
+
     return res.status(200).json({ok: true, proyectos })
 }
 const obtenerProyecto = async (req, res) => {
@@ -172,7 +180,6 @@ const eliminarColaborador = async (req, res) => {
 
     const { id:idProyecto } = req.params
     const { id:idColaborador } = req.body
-
 
     if( idProyecto.length != 24 ){
         const error = new Error('el formato del id no es valido')
