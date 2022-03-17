@@ -256,9 +256,8 @@ const ProyectosProvider = ({children}) => {
             console.log(error)
         }
     }
-    const eliminarColaborador = async id => {
-        console.log(id)
-        return
+    const eliminarColaborador = async () => {
+        
         const token = localStorage.getItem('token')
         if(!token) return
 
@@ -270,18 +269,18 @@ const ProyectosProvider = ({children}) => {
         }
 
         try {
-            const { data } = await clienteAxios.delete(`/tareas/${id}`, config)
+            const { data } = await clienteAxios.post(`/proyectos/eliminar-colaborador/${proyecto._id}`, {id: colaborador._id}, config)
             setAlerta({ msg: data.msg, error: false })
+            setColaborador({})
             //sincronizamos el state
             const proyectoActualizado = { ...proyecto }
-            const tareas = proyectoActualizado.tareas.filter( tarea => tarea._id !== id)
-            proyectoActualizado.tareas = [ ...tareas ]
+            const colaboradores = proyectoActualizado.colaboradores.filter( colaboradorState => colaboradorState._id !== colaborador._id)
+            proyectoActualizado.colaboradores = [ ...colaboradores ]
             setProyecto(proyectoActualizado)
-            setTarea({})
-            setModalEliminarTarea( false )
+            setModalEliminarColaborador( false )
             setTimeout(() => {
                 setAlerta({})
-            }, 3000)
+            }, 2000)
             
         } catch (error) {
             console.log(error)

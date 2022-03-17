@@ -164,15 +164,37 @@ const agregarColaborador = async (req, res) => {
     }
     //si todo bien, se puede agregar
     proyecto.colaboradores.push(usuario._id)
-    const proyectoActualizado = await  proyecto.save()
+    const proyectoActualizado = await proyecto.save()
     return res.status(200).json( { ok: true, msg: 'Colaborador agregado', proyecto: proyectoActualizado } )
-
-
-
 }
 
 const eliminarColaborador = async (req, res) => {
-  
+
+    const { id:idProyecto } = req.params
+    const { id:idColaborador } = req.body
+
+
+    if( idProyecto.length != 24 ){
+        const error = new Error('el formato del id no es valido')
+        return res.status(400).json( {ok: false, msg: error.message} )
+    }
+
+    const proyecto = await Proyecto.findById(idProyecto)
+
+    if(!proyecto){
+        const error = new Error('El proyecto no se encontró')
+        return res.status(404).json( {ok:false, msg: error.message } )
+    }
+    //sino es el creador del proyecto, aqui se termina
+    if( proyecto.creador.toString() !== req.usuario._id.toString() ){
+        const error = new Error('Acción no válida')
+        return res.status(401).json( {ok:false, msg: error.message} )
+    }
+     //si todo bien, se puede eliminar
+     proyecto.colaboradores.pull(idColaborador)
+     const proyectoActualizado = await proyecto.save()
+     return res.status(200).json( { ok: true, msg: 'Colaborador borrado', proyecto: proyectoActualizado } )
+    
 }
 
 

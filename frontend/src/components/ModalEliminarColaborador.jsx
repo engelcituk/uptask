@@ -67,14 +67,14 @@ const ModalEliminarColaborador = () => {
                                     
                                     <div className='mt-2'>
                                         <p className='text-sm text-gray-500'>
-                                            Una colaborador eliminada no se podrá recuperar
+                                            Una colaborador eliminado no se podrá recuperar
                                         </p>
                                     </div>
                                     <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
                                         <button
                                             type="button"
                                             className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                                            onClick={ () => eliminarColaborador(colaborador._id) }
+                                            onClick={ () => eliminarColaborador() }
                                         >
                                             Eliminar
                                         </button>

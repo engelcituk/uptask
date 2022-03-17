@@ -8,7 +8,7 @@ const Colaborador = ({colaborador}) => {
         <div className='border-b p-5 flex justify-between items-center'>
             <div>
                 <p className='mb-1 text-xl'>{nombre}</p>
-                <p className='mb-1 text-sm text-gray-500 uppercase'>{email}</p>
+                <p className='mb-1 text-sm text-gray-500'>{email}</p>
             </div>
             <div className="flex gap-2">
                 <button
