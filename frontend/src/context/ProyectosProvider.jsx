@@ -46,7 +46,7 @@ const ProyectosProvider = ({children}) => {
         //despues de unos 5 segundos, desaparecer alerta
         setTimeout(() => {
             setAlerta({})
-        }, 5000)
+        }, 3000)
     }
     //para guardar un proyecto
     const submitProyecto = async proyecto => {
@@ -166,13 +166,19 @@ const ProyectosProvider = ({children}) => {
             const proyectoActualizado = { ...proyecto }
             proyectoActualizado.tareas = [...proyecto.tareas, data.tarea ]
             setProyecto(proyectoActualizado)
+            setModalFormularioTarea( false )
             //despues de  3 segundos reseteo alerta
+            
+        } catch (error) {
+            if(error.response){
+                setAlerta({msg: error.response.data.msg, error: true })
+                setModalFormularioTarea( false )
+                // setCuentaConfirmada(false)
+            }
+        } finally{
             setTimeout(() => {
                 setAlerta({})
-                setModalFormularioTarea( false )
             }, 2000)
-        } catch (error) {
-            console.log(error)
         }
     }
 
@@ -278,12 +284,18 @@ const ProyectosProvider = ({children}) => {
             proyectoActualizado.colaboradores = [ ...colaboradores ]
             setProyecto(proyectoActualizado)
             setModalEliminarColaborador( false )
+            
+            
+        } catch (error) {
+            if(error.response){
+                setAlerta({msg: error.response.data.msg, error: true })
+                setModalEliminarColaborador( false )
+                // setCuentaConfirmada(false)
+            }
+        } finally{
             setTimeout(() => {
                 setAlerta({})
             }, 2000)
-            
-        } catch (error) {
-            console.log(error)
         }
     }
     const submitColaborador = async email => {

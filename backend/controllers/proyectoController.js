@@ -28,8 +28,10 @@ const obtenerProyecto = async (req, res) => {
         const error = new Error('El proyecto no existe')
         return res.status(404).json( {ok: false, msg: error.message } )
     }
-
-    if( proyecto.creador.toString() !== req.usuario._id.toString() ){
+    const noEsCreadorDelProyecto = proyecto.creador.toString() !== req.usuario._id.toString() 
+    const noEsColaboradorDelProyecto = !proyecto.colaboradores.some( colaborador => colaborador._id.toString() === req.usuario._id.toString())
+    //si es el creador o colaborador del proyecto,
+    if( noEsCreadorDelProyecto && noEsColaboradorDelProyecto ){
         const error = new Error('No puedes ver este proyecto si no eres creador o colaborador')
         return res.status(401).json( { msg: error.message} )
     }

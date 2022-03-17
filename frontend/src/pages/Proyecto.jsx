@@ -20,8 +20,13 @@ function Proyecto() {
     useEffect(() => {
         obtenerProyecto(id) 
     }, [])
+    if( cargando ) return <Spinner/>
     return (
-        cargando ? <Spinner/> : (
+        msg && alerta.error ? (
+            <Alerta alerta={alerta}/>
+        )
+        :
+        (
             <>
                 <div className='flex justify-between'>
                     <h1 className='font-black text-4xl'>{nombre}</h1>
@@ -47,11 +52,7 @@ function Proyecto() {
                 </button>
                 <p className='font-bold text-xl mt-10'>Tareas del proyecto</p>
                 <div className='flex justify-center'>
-                    <div className='w-full md:w-1/3 lg:w-1/4'>
-                        {
-                            msg &&  <Alerta alerta={alerta}/>
-                        }
-                    </div>
+                    
                 </div>
                 <div className='bg-white shadow mt-10 rounded'>
                     {

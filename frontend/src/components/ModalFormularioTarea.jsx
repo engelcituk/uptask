@@ -41,6 +41,7 @@ const ModalFormularioTarea = () => {
               msg: 'Todos los campos son obligatorios',
               error: true
             })
+            console.log('aqui llego')
             return
         }
         await submitTarea({id, nombre, descripcion, fechaEntrega, prioridad, proyecto: params.id})
