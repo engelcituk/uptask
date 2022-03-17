@@ -6,18 +6,6 @@ const obtenerProyectos = async (req, res) => {
     const proyectos = await Proyecto.find().where('creador').equals(req.usuario).select('-tareas')
     return res.status(200).json({ok: true, proyectos })
 }
-
-const nuevoProyecto = async (req, res) => {
-    const proyecto = new Proyecto(req.body)
-    proyecto.creador = req.usuario._id
-    try {
-        const proyectoAlmacenado = await proyecto.save()
-        return res.status(201).json({ok:true, proyecto: proyectoAlmacenado })
-    } catch (error) {
-        console.log(error)
-    }
-}
-
 const obtenerProyecto = async (req, res) => {
     const { id } = req.params
     
@@ -25,8 +13,8 @@ const obtenerProyecto = async (req, res) => {
         const error = new Error('el formato del id no es valido')
         return res.status(400).json( { msg: error.message} )
     }
-
-    const proyecto = await Proyecto.findById(id).populate('tareas')
+    //traigo le proyecto con sus tareas, colaboradores, de los colaboradores solo traer id, nombre, email
+    const proyecto = await Proyecto.findById(id).populate('tareas').populate('colaboradores','nombre email')
 
     if(!proyecto){
         const error = new Error('El proyecto no existe')
@@ -42,6 +30,17 @@ const obtenerProyecto = async (req, res) => {
 
     return res.status(200).json( {ok: true, proyecto } )
 
+}
+
+const nuevoProyecto = async (req, res) => {
+    const proyecto = new Proyecto(req.body)
+    proyecto.creador = req.usuario._id
+    try {
+        const proyectoAlmacenado = await proyecto.save()
+        return res.status(201).json({ok:true, proyecto: proyectoAlmacenado })
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 const editarProyecto = async (req, res) => {

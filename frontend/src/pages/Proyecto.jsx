@@ -7,6 +7,8 @@ import ModalEliminarTarea from '../components/ModalEliminarTarea'
 import Alerta from '../components/Alerta'
 
 import Tarea from '../components/Tarea'
+import Colaborador from '../components/Colaborador'
+
 
 function Proyecto() {
     const params = useParams()
@@ -15,7 +17,6 @@ function Proyecto() {
     const { nombre, _id } = proyecto
     const { msg } = alerta
 
-    // 
     useEffect(() => {
         obtenerProyecto(id) 
     }, [])
@@ -71,6 +72,19 @@ function Proyecto() {
                         className='text-gray-400 hover:text-black uppercase font-bold'
                     >
                     Añadir</Link>
+                </div>
+
+                <div className='bg-white shadow mt-10 rounded'>
+                    {
+                        proyecto.colaboradores?.length ?
+                        proyecto.colaboradores?.map( colaborador => (
+                            <Colaborador
+                                key={colaborador._id}
+                                colaborador={colaborador}
+                            />
+                        )) :
+                        <p className='text-center my-5 p-10'>No hay colaboradores en este proyecto</p>
+                    }
                 </div>
 
                 <ModalFormularioTarea/>
