@@ -12,11 +12,11 @@ const ProyectosProvider = ({children}) => {
     const [ modalFormularioTarea, setModalFormularioTarea ] = useState(false)
     const [ tarea, setTarea ] = useState({})
     const [ modalEliminarTarea, setModalEliminarTarea ] = useState(false)
-    const [ colaborador, setColaborador] = useState({})
-
-
+    const [ colaborador, setColaborador ] = useState({})
+    const [ modalEliminarColaborador, setModalEliminarColaborador ] = useState(false)
 
     const navigate = useNavigate()
+
     useEffect(() => {
         obtenerProyectos() // obtengo los proyectos
     }, [])
@@ -96,35 +96,6 @@ const ProyectosProvider = ({children}) => {
                 msg: 'El proyecto se actualizó correctamente',
                 error: false
             })
-            //despues de  3 segundos lo mando al listado de proyectos
-            setTimeout(() => {
-                setAlerta({})
-                navigate('/proyectos')
-            }, 3000)
-            // setProyectos( data.usuario )
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    const eliminarProyecto = async id => {
-        const token = localStorage.getItem('token')
-        if(!token) return
-
-        const config = {
-            headers:{
-                'Conten-Type': 'application/json', 
-                Authorization: `Bearer ${token}`
-            }
-        }
-
-        try {
-            const { data } = await clienteAxios.delete(`/proyectos/${id}`, config)
-            //sincronizamos el state
-            const proyectosActualizados = proyectos.filter( proyecto =>  proyecto._id !== id )
-            setProyectos(proyectosActualizados) // agrego al state proyectos con el que ya está actualizado
-            //mostramos el alerta del borrado
-            setAlerta({ msg: data.msg, error: false })
             //despues de  3 segundos lo mando al listado de proyectos
             setTimeout(() => {
                 setAlerta({})
@@ -226,7 +197,68 @@ const ProyectosProvider = ({children}) => {
             console.log(error)
         }
     }
+
+    const eliminarProyecto = async id => {
+        const token = localStorage.getItem('token')
+        if(!token) return
+
+        const config = {
+            headers:{
+                'Conten-Type': 'application/json', 
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        try {
+            const { data } = await clienteAxios.delete(`/proyectos/${id}`, config)
+            //sincronizamos el state
+            const proyectosActualizados = proyectos.filter( proyecto =>  proyecto._id !== id )
+            setProyectos(proyectosActualizados) // agrego al state proyectos con el que ya está actualizado
+            //mostramos el alerta del borrado
+            setAlerta({ msg: data.msg, error: false })
+            //despues de  3 segundos lo mando al listado de proyectos
+            setTimeout(() => {
+                setAlerta({})
+                navigate('/proyectos')
+            }, 3000)
+            // setProyectos( data.usuario )
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     const eliminarTarea = async id => {
+        const token = localStorage.getItem('token')
+        if(!token) return
+
+        const config = {
+            headers:{
+                'Conten-Type': 'application/json', 
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        try {
+            const { data } = await clienteAxios.delete(`/tareas/${id}`, config)
+            setAlerta({ msg: data.msg, error: false })
+            //sincronizamos el state
+            const proyectoActualizado = { ...proyecto }
+            const tareas = proyectoActualizado.tareas.filter( tarea => tarea._id !== id)
+            proyectoActualizado.tareas = [ ...tareas ]
+            setProyecto(proyectoActualizado)
+            setTarea({})
+            setModalEliminarTarea( false )
+            setTimeout(() => {
+                setAlerta({})
+            }, 3000)
+            
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    const eliminarColaborador = async id => {
+        console.log(id)
+        return
         const token = localStorage.getItem('token')
         if(!token) return
 
@@ -331,6 +363,12 @@ const ProyectosProvider = ({children}) => {
         setModalEliminarTarea( !modalEliminarTarea )
     }
 
+    const handleModalEliminarColaborador = colaborador => {
+        setColaborador(colaborador)
+        setModalEliminarColaborador( !modalEliminarColaborador )
+    }
+
+    
     return (
         <ProyectosContext.Provider
             value={{
@@ -339,12 +377,15 @@ const ProyectosProvider = ({children}) => {
                 colaborador, // state
                 modalEliminarTarea,// state
                 modalFormularioTarea, // state
+                modalEliminarColaborador, // state
                 proyecto, // state
                 proyectos, //state
                 tarea, //state
                 agregarColaborador, // funcion para agregar colaborador
+                eliminarColaborador, // función para eliminar colaborador desde el modal
                 eliminarProyecto, //Funcion para eliminar un proyecto por el id
                 eliminarTarea, // función para eliminar tarea desde el modal
+                handleModalEliminarColaborador, // funcion para abrir modal de eliminacion de un colaborador
                 handleModalEditarTarea, // función para actualizar la tarea
                 handleModalEliminarTarea, // función para abrir modal de eliminación de una tarea
                 handleModalTarea, // función para ocultar/mostrar modal crear/editar tareas

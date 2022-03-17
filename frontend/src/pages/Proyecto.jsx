@@ -4,10 +4,10 @@ import useProyectos from '../hooks/useProyectos'
 import Spinner from '../components/Spinner'
 import ModalFormularioTarea from '../components/ModalFormularioTarea'
 import ModalEliminarTarea from '../components/ModalEliminarTarea'
-import Alerta from '../components/Alerta'
-
+import ModalEliminarColaborador from '../components/ModalEliminarColaborador'
 import Tarea from '../components/Tarea'
 import Colaborador from '../components/Colaborador'
+import Alerta from '../components/Alerta'
 
 
 function Proyecto() {
@@ -89,6 +89,7 @@ function Proyecto() {
 
                 <ModalFormularioTarea/>
                 <ModalEliminarTarea/>
+                <ModalEliminarColaborador/>
             </>
         )
     )
