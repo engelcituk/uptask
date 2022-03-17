@@ -153,8 +153,13 @@ const ProyectosProvider = ({children}) => {
         try {
             const { data } = await clienteAxios(`/proyectos/${id}`, config )
             setProyecto(data.proyecto) // pongo el proyecto en el state
+            setAlerta({})
+
         } catch (error) {
-            console.log(error) 
+            if(error.response){
+                setAlerta({msg: error.response.data.msg, error: true })
+                // setCuentaConfirmada(false)
+            }
         } finally{
             setCargando(false)
         }
@@ -280,7 +285,35 @@ const ProyectosProvider = ({children}) => {
     }
 
     const agregarColaborador = async email => {
-        console.log(email)
+        const token = localStorage.getItem('token')
+        if(!token) return
+
+        const config = {
+            headers:{
+                'Conten-Type': 'application/json', 
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        try {
+            const { data } = await clienteAxios.post(`/proyectos/colaboradores/${proyecto._id}`, email, config)
+            setAlerta({msg: data.msg, error: false })
+            setColaborador({})
+            setTimeout(() => {
+                setAlerta({})
+            }, 3000)
+
+            
+        } catch (error) {
+            if(error.response){
+                setAlerta({msg: error.response.data.msg, error: true })
+                setColaborador({})
+                setTimeout(() => {
+                    setAlerta({})
+                }, 3000)
+                // setCuentaConfirmada(false)
+            }
+        }
     }
 
     const handleModalTarea = () => {

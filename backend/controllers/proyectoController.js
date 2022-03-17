@@ -30,7 +30,7 @@ const obtenerProyecto = async (req, res) => {
 
     if(!proyecto){
         const error = new Error('El proyecto no existe')
-        return res.status(404).json( { msg: error.message } )
+        return res.status(404).json( {ok: false, msg: error.message } )
     }
 
     if( proyecto.creador.toString() !== req.usuario._id.toString() ){
@@ -126,7 +126,50 @@ const buscarColaborador = async (req, res) => {
 }
 
 const agregarColaborador = async (req, res) => {
-  
+
+    const { id } = req.params
+    const { email } = req.body
+
+    if( id.length != 24 ){
+        const error = new Error('el formato del id no es valido')
+        return res.status(400).json( {ok: false, msg: error.message} )
+    }
+
+    const proyecto = await Proyecto.findById(id)
+
+    if(!proyecto){
+        const error = new Error('El proyecto no se encontró')
+        return res.status(404).json( {ok:false, msg: error.message } )
+    }
+    //sino es el creador del proyecto, aqui se termina
+    if( proyecto.creador.toString() !== req.usuario._id.toString() ){
+        const error = new Error('Acción no válida')
+        return res.status(401).json( {ok:false, msg: error.message} )
+    }
+    
+    const usuario = await Usuario.findOne({email}).select('-password -createdAt -confirmado -updatedAt -__v -token')
+
+    if(!usuario){
+        const error = new Error('El usuario no existe')
+        return res.status(404).json( {ok: false, msg: error.message, usuario: null } )
+    }
+    // el colaborador no es el admin del proyecto
+    if( proyecto.creador.toString() === usuario._id.toString() ){
+        const error = new Error('El creador del proyecto no puede ser colaborador')
+        return res.status(401).json( {ok:false, msg: error.message} )
+    }
+    //Revisar que el colaborador no esté agregado al proyecto
+    if(proyecto.colaboradores.includes(usuario._id)){
+        const error = new Error('El colaborador ya pertenece proyecto')
+        return res.status(401).json( {ok:false, msg: error.message} )
+    }
+    //si todo bien, se puede agregar
+    proyecto.colaboradores.push(usuario._id)
+    const proyectoActualizado = await  proyecto.save()
+    return res.status(200).json( { ok: true, msg: 'Colaborador agregado', proyecto: proyectoActualizado } )
+
+
+
 }
 
 const eliminarColaborador = async (req, res) => {
