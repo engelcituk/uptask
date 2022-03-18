@@ -22,7 +22,9 @@ const obtenerProyecto = async (req, res) => {
         return res.status(400).json( { msg: error.message} )
     }
     //traigo le proyecto con sus tareas, colaboradores, de los colaboradores solo traer id, nombre, email
-    const proyecto = await Proyecto.findById(id).populate('tareas').populate('colaboradores','nombre email')
+    const proyecto = await Proyecto.findById(id)
+        .populate({path: 'tareas', populate:{ path:'completado', select:'nombre email'} })
+        .populate('colaboradores','nombre email')
 
     if(!proyecto){
         const error = new Error('El proyecto no existe')
