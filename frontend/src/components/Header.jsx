@@ -6,14 +6,16 @@ const Header = () => {
       <div className="md:flex md:justify-between">
       <Link
             to='/proyectos'
-            className="text-4xl text-sky-600 font-black"
+            className="text-4xl text-sky-600 font-black mb-5 md:mb-0"
           >UpTask</Link>
-        <input
-          tipe="search"
-          placeholder="Buscar proyecto"
-          className="rounded-lg lg:w-96 block p-2 border"
-        />
-        <div className='flex items-center gap-4'>
+        
+        <div className='flex flex-col md:flex-row items-center gap-4'>
+          <button
+            type='button'
+            className='font-bold uppercase'
+          >
+            Buscar Proyecto
+          </button>
           <Link
             to='/proyectos'
             className='font-bold uppercase'
