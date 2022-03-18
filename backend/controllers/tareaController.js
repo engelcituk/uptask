@@ -122,7 +122,40 @@ const eliminarTarea = async (req, res) => {
 }
 
 const cambiarEstado = async (req, res) => {
-    console.log( req.params.id ) 
+    const { id } = req.params
+
+    if( id.length != 24 ){
+        const error = new Error('el formato del id no es valido')
+        return res.status(400).json( { msg: error.message} )
+    }
+
+    const tarea = await Tarea.findById(id).populate('proyecto')// traigo tambien el proyeccto asociado a este tarea
+
+    if(!tarea){
+        const error = new Error('La tarea no existe')
+        return res.status(404).json( { msg: error.message } )
+    }
+    const noEsCreadorDelProyecto = tarea.proyecto.creador.toString() !== req.usuario._id.toString()
+    const noEsColaboradorDelProyecto = !tarea.proyecto.colaboradores.some( colaborador => colaborador._id.toString() === req.usuario._id.toString())
+    //si es el creador o colaborador del proyecto,
+    if( noEsCreadorDelProyecto && noEsColaboradorDelProyecto ){
+        const error = new Error('No puedes cambiar el estado de la tarea si no eres el creador o colaborador')
+        return res.status(401).json( { msg: error.message} )
+    }
+    
+
+    if( tarea.proyecto.creador.toString() !== req.usuario._id.toString() ){
+        const error = new Error('No puedes ver esta tarea si no eres creador o colaborador')
+        return res.status(403).json( { msg: error.message} )
+    }
+    
+    try {
+        tarea.estado = !tarea.estado
+        const tareaActualizada = await tarea.save()
+        return res.status(200).json({ok:true, tarea: tareaActualizada, msg: 'Tarea se actualizado'})
+    } catch (error) {
+        console.log(error)
+    }
 }
 
 

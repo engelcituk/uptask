@@ -246,7 +246,18 @@ const ProyectosProvider = ({children}) => {
 
         try {
             const { data } = await clienteAxios.post(`/tareas/estado/${id}`, {}, config)
-            console.log( data )
+            setAlerta({msg: data.msg, error: false })
+            //Agregar la tarea al state
+            const proyectoActualizado = { ...proyecto }
+            const tareas = proyectoActualizado.tareas.map( tarea => tarea._id === data.tarea._id ? data.tarea : tarea )
+            proyectoActualizado.tareas = [...tareas ]
+            setProyecto(proyectoActualizado)
+            setTarea({})
+            //despues de  3 segundos reseteo alerta
+            setTimeout(() => {
+                setAlerta({})
+                setModalFormularioTarea( false )
+            }, 2000)
             
         } catch (error) {
             if(error.response){
