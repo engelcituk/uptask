@@ -14,6 +14,8 @@ const ProyectosProvider = ({children}) => {
     const [ modalEliminarTarea, setModalEliminarTarea ] = useState(false)
     const [ colaborador, setColaborador ] = useState({})
     const [ modalEliminarColaborador, setModalEliminarColaborador ] = useState(false)
+    const [ buscador, setBuscador ] = useState(false)
+
 
     const navigate = useNavigate()
 
@@ -401,7 +403,6 @@ const ProyectosProvider = ({children}) => {
     }
 
     const handleModalTarea = () => {
-        
         setModalFormularioTarea( !modalFormularioTarea )
         setTarea({})
     }
@@ -421,11 +422,16 @@ const ProyectosProvider = ({children}) => {
         setModalEliminarColaborador( !modalEliminarColaborador )
     }
 
+    const handleModalBuscador = () => {
+        setBuscador( !buscador )
+    }
+
     
     return (
         <ProyectosContext.Provider
             value={{
                 alerta, //state
+                buscador, // state
                 cargando, // state
                 colaborador, // state
                 modalEliminarTarea,// state
@@ -439,6 +445,7 @@ const ProyectosProvider = ({children}) => {
                 eliminarColaborador, // función para eliminar colaborador desde el modal
                 eliminarProyecto, //Funcion para eliminar un proyecto por el id
                 eliminarTarea, // función para eliminar tarea desde el modal
+                handleModalBuscador, // funcion para abrir modal para un buscador
                 handleModalEliminarColaborador, // funcion para abrir modal de eliminacion de un colaborador
                 handleModalEditarTarea, // función para actualizar la tarea
                 handleModalEliminarTarea, // función para abrir modal de eliminación de una tarea
