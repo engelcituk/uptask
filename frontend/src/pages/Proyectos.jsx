@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react'
-
 import useProyectos from '../hooks/useProyectos'
 //componente
 import PreviewProyecto from '../components/PreviewProyecto'
+import Alerta from '../components/Alerta'
 
 const Proyectos = () => {
-  const { proyectos, obtenerProyectos } = useProyectos()
+  const { proyectos, obtenerProyectos, alerta } = useProyectos()
+  const { msg } = alerta
+
     //use effect que funciona para la vista de listado de proyectos
   useEffect(() => {
     obtenerProyectos() // obtengo los proyectos
@@ -14,6 +16,9 @@ const Proyectos = () => {
   return (
     <>
     <h1 className='text-4xl font-black'>Proyectos</h1>
+    {
+      msg &&  <Alerta alerta={alerta}/>
+    }
     <div className='bg-white shadow mt-10 rounded-lg'>
       {
         proyectos.length ? 

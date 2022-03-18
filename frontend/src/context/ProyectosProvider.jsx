@@ -131,6 +131,10 @@ const ProyectosProvider = ({children}) => {
                 setAlerta({msg: error.response.data.msg, error: true })
                 // setCuentaConfirmada(false)
             }
+            navigate('/proyectos')
+            setTimeout(() => {
+                setAlerta({})
+            }, 3000);
         } finally{
             setCargando(false)
         }
