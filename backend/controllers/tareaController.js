@@ -100,7 +100,7 @@ const eliminarTarea = async (req, res) => {
         return res.status(400).json( { msg: error.message} )
     }
 
-    const tarea = await Tarea.findById(id).populate('proyecto')// traigo tambien el proyeccto asociado a este tarea
+    const tarea = await Tarea.findById(id).populate('proyecto')// traigo tambien el proyecto asociado a este tarea
 
     if(!tarea){
         const error = new Error('La tarea no existe')
@@ -113,7 +113,13 @@ const eliminarTarea = async (req, res) => {
     }
 
     try {
-        await tarea.deleteOne()
+        const proyecto = await Proyecto.findById(tarea.proyecto)// busco el proyecto
+        proyecto.tareas.pull(tarea._id) //elimino de ese proyecto la referencia de esa tarea
+        await Promise.allSettled([
+            await proyecto.save(), //actualizo el proyecto con la tarea ya eliminada 
+            await tarea.deleteOne() // Elimino el proyecto
+        ])
+
         return res.status(200).json( { ok:true, msg: 'Se ha borrado la tarea'} )
     } catch (error) {
         console.log(error)
