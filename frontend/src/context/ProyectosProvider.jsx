@@ -233,6 +233,32 @@ const ProyectosProvider = ({children}) => {
         }
     }
 
+    const completarTarea = async id => {
+        const token = localStorage.getItem('token')
+        if(!token) return
+
+        const config = {
+            headers:{
+                'Conten-Type': 'application/json', 
+                Authorization: `Bearer ${token}`
+            }
+        }
+
+        try {
+            const { data } = await clienteAxios.post(`/tareas/estado/${id}`, {}, config)
+            console.log( data )
+            
+        } catch (error) {
+            if(error.response){
+                setAlerta({msg: error.response.data.msg, error: true })
+                setTimeout(() => {
+                    setAlerta({})
+                }, 3000)
+                // setCuentaConfirmada(false)
+            }
+        }
+    }
+
     const eliminarTarea = async id => {
         const token = localStorage.getItem('token')
         if(!token) return
@@ -360,6 +386,7 @@ const ProyectosProvider = ({children}) => {
     }
 
     const handleModalTarea = () => {
+        
         setModalFormularioTarea( !modalFormularioTarea )
         setTarea({})
     }
@@ -393,6 +420,7 @@ const ProyectosProvider = ({children}) => {
                 proyectos, //state
                 tarea, //state
                 agregarColaborador, // funcion para agregar colaborador
+                completarTarea,// funcion para marcar tarea completada
                 eliminarColaborador, // función para eliminar colaborador desde el modal
                 eliminarProyecto, //Funcion para eliminar un proyecto por el id
                 eliminarTarea, // función para eliminar tarea desde el modal
