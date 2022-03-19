@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import cors from 'cors'
+import { Server } from 'socket.io'
 import conectarDB from './config/db.js'
 import usuarioRoutes from './routes/usuarioRoutes.js'
 import proyectoRoutes from './routes/proyectoRoutes.js'
@@ -14,7 +15,7 @@ dotenv.config()
 
 conectarDB()
 //Configurar CORS
-const whiteList = [process.env.FRONTEND_URL] //muy importante no dejar el / al final de la url
+const whiteList = [ process.env.FRONTEND_URL ] //muy importante no dejar el / al final de la url
 const corsOptions = {
     origin: function (origin, callback) {
         if( whiteList.includes(origin) ){
@@ -36,6 +37,20 @@ app.use('/api/tareas', tareaRoutes)
 
 const PORT = process.env.PORT || 4000
 
-app.listen( PORT, () => {
+const servidor = app.listen( PORT, () => {
     console.log(`Servidor corriendo en el puerto ${PORT}`)
+})
+
+//socket.io configuración
+const io = new Server( servidor, {
+    pingTimeout: 60000,
+    cors: {
+        origin: process.env.FRONTEND_URL,
+
+    }
+})
+
+io.on('conection', (socket) => {
+    console.log('Conectado a Socket.io')
+    //Definir los eventos de socket.io
 })
