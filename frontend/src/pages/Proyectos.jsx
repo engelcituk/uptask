@@ -15,6 +15,7 @@ const Proyectos = () => {
   useEffect(() => {
     obtenerProyectos() // obtengo los proyectos
     socket = io(import.meta.env.VITE_BACKEND_URL)
+    socket.emit('prueba', 'Juan')
 }, []) // vacio porque se ejecuta solo una vez
 
   return (
