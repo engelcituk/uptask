@@ -70,4 +70,10 @@ io.on('connection', (socket) => {
         const proyecto  = tarea.proyecto._id
         socket.to(proyecto).emit('tarea actualizada', tarea )
     })
+
+    socket.on('cambiar estado', tarea => { // el evento
+        const proyecto  = tarea.proyecto._id
+        socket.to(proyecto).emit('estado cambiado', tarea )
+    })
+   
 })

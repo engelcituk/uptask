@@ -254,11 +254,9 @@ const ProyectosProvider = ({children}) => {
         try {
             const { data } = await clienteAxios.post(`/tareas/estado/${id}`, {}, config)
             setAlerta({msg: data.msg, error: false })
-            //Agregar la tarea al state
-            const proyectoActualizado = { ...proyecto }
-            const tareas = proyectoActualizado.tareas.map( tarea => tarea._id === data.tarea._id ? data.tarea : tarea )
-            proyectoActualizado.tareas = [...tareas ]
-            setProyecto(proyectoActualizado)
+             //SOCKET IO
+             socket.emit('cambiar estado', data.tarea ) // se lo paso al socket
+
             setTarea({})
             //despues de  3 segundos reseteo alerta
             setTimeout(() => {
@@ -448,6 +446,14 @@ const ProyectosProvider = ({children}) => {
         setProyecto(proyectoActualizado)
     }
 
+    const cambiarEstadoTareaProyecto = tarea => {
+        //Agregar la tarea al state
+        const proyectoActualizado = { ...proyecto }
+        const tareas = proyectoActualizado.tareas.map( tareaState => tareaState._id === tarea._id ? tarea : tareaState )
+        proyectoActualizado.tareas = [...tareas ]
+        setProyecto(proyectoActualizado)
+    }
+
     return (
         <ProyectosContext.Provider
             value={{
@@ -481,7 +487,8 @@ const ProyectosProvider = ({children}) => {
                 //metodos usados para socket io
                 submitTareasProyecto,
                 eliminarTareaProyecto,
-                actualizarTareaProyecto
+                actualizarTareaProyecto,
+                cambiarEstadoTareaProyecto
             }}
         >
             {children}
