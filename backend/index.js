@@ -53,7 +53,13 @@ io.on('connection', (socket) => {
     console.log('Conectado a Socket.io')
     //Definir los eventos de socket.io
     socket.on('abrir proyecto', (proyecto) => { // el evento
-        console.log('desde view proyecto', proyecto )
         socket.join(proyecto) //lo uno a este cuarto
+    })
+
+    socket.on('nueva tarea', (tarea) => { // el evento
+        const proyecto  = tarea.proyecto
+        console.log(proyecto,'antes de emitir')
+        socket.to(proyecto).emit('tarea agregada', tarea)
+        console.log(proyecto,'emitito')
     })
 })

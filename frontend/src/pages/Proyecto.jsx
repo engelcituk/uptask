@@ -17,7 +17,7 @@ let socket
 function Proyecto() {
     const params = useParams()
     const isAdmin = useAdmin()
-    const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta } = useProyectos() //uso del hook para trabajar con el ProyectosProvider
+    const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta, submitTareasProyecto } = useProyectos() //uso del hook para trabajar con el ProyectosProvider
     const { id } = params
     const { nombre, _id } = proyecto
     const { msg } = alerta
@@ -32,11 +32,13 @@ function Proyecto() {
     }, []) // se ejecuta una sola vez para abrir el proyecto y entrar a ese room
     
     useEffect(() => {
-      socket.on('respuesta', (nombre) => {
-          console.log(nombre)
-      })
-    })
-    
+        socket.on('tarea agregada', nuevaTarea => {
+            if( nuevaTarea.proyecto === proyecto._id ){ // el state tiene cual es el que tiene que actualizar
+                submitTareasProyecto(nuevaTarea)
+            }
+        })
+    }) // se ejecutará siempre
+
     if( cargando ) return <Spinner/>
    
     return (

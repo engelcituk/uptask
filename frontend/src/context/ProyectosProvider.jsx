@@ -1,7 +1,9 @@
 import { useState, useEffect, createContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import clienteAxios from '../config/clienteAxios'
+import io from 'socket.io-client'
  
+let socket
 const ProyectosContext = createContext()
 
 const ProyectosProvider = ({children}) => {
@@ -22,6 +24,11 @@ const ProyectosProvider = ({children}) => {
     useEffect(() => {
         obtenerProyectos() // obtengo los proyectos
     }, [])
+
+    useEffect(() => {
+        socket = io(import.meta.env.VITE_BACKEND_URL) //abro mi conexión para socket
+    }, []) // una sola vez  para abrir la conexión a socket io
+    
     //para obtener proyectos
     const obtenerProyectos = async () => {
         const token = localStorage.getItem('token')
@@ -168,13 +175,10 @@ const ProyectosProvider = ({children}) => {
                 msg: 'La tarea se creó correctamente ',
                 error: false
             })
-            //Agregar la tarea al state
-            const proyectoActualizado = { ...proyecto }
-            proyectoActualizado.tareas = [...proyecto.tareas, data.tarea ]
-            setProyecto(proyectoActualizado)
             setModalFormularioTarea( false )
-            //despues de  3 segundos reseteo alerta
-            
+            //SOCKET IO
+            socket.emit('nueva tarea', data.tarea) // se lo paso al socket
+
         } catch (error) {
             if(error.response){
                 setAlerta({msg: error.response.data.msg, error: true })
@@ -426,6 +430,13 @@ const ProyectosProvider = ({children}) => {
         setBuscador( !buscador )
     }
 
+    //SOCKET IO
+    const submitTareasProyecto = (tarea) => {
+        //Agregar la tarea al state
+        const proyectoActualizado = { ...proyecto }
+        proyectoActualizado.tareas = [...proyectoActualizado.tareas, tarea ]
+        setProyecto(proyectoActualizado)
+    }
     
     return (
         <ProyectosContext.Provider
@@ -440,6 +451,7 @@ const ProyectosProvider = ({children}) => {
                 proyecto, // state
                 proyectos, //state
                 tarea, //state
+                //metodos normales
                 agregarColaborador, // funcion para agregar colaborador
                 completarTarea,// funcion para marcar tarea completada
                 eliminarColaborador, // función para eliminar colaborador desde el modal
@@ -456,6 +468,8 @@ const ProyectosProvider = ({children}) => {
                 submitColaborador, // funcion para añadir colaborador
                 submitProyecto, //funcion para guardar el proyecto al back
                 submitTarea, // funcion para guardar tarea
+                //metodos usados para socket io
+                submitTareasProyecto
             }}
         >
             {children}
