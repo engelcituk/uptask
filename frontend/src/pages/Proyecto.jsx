@@ -17,7 +17,7 @@ let socket
 function Proyecto() {
     const params = useParams()
     const isAdmin = useAdmin()
-    const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta, submitTareasProyecto, eliminarTareaProyecto } = useProyectos() //uso del hook para trabajar con el ProyectosProvider
+    const { obtenerProyecto, proyecto, cargando, handleModalTarea, alerta, submitTareasProyecto, eliminarTareaProyecto, actualizarTareaProyecto } = useProyectos() //uso del hook para trabajar con el ProyectosProvider
     const { id } = params
     const { nombre, _id } = proyecto
     const { msg } = alerta
@@ -39,8 +39,12 @@ function Proyecto() {
         })
         socket.on('tarea eliminada', tareaEliminada => {
             if( tareaEliminada.proyecto === proyecto._id ){ // el state tiene cual es el que tiene que actualizar
-                console.log('me ejecuto son iguales')
                 eliminarTareaProyecto(tareaEliminada)
+            }
+        })
+        socket.on('tarea actualizada', tareaActualizada => {
+            if( tareaActualizada.proyecto._id === proyecto._id ){ // el state tiene cual es el que tiene que actualizar
+                actualizarTareaProyecto(tareaActualizada)
             }
         })
     }) // se ejecutará siempre

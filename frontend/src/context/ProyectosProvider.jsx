@@ -199,15 +199,12 @@ const ProyectosProvider = ({children}) => {
                 msg: 'La tarea se actualizó correctamente ',
                 error: false
             })
-            //Agregar la tarea al state
-            const proyectoActualizado = { ...proyecto }
-            const tareas = proyectoActualizado.tareas.map( tarea => tarea._id === data.tarea._id ? data.tarea : tarea )
-            proyectoActualizado.tareas = [...tareas ]
-            setProyecto(proyectoActualizado)
+            //SOCKET IO
+            socket.emit('actualizar tarea', data.tarea ) // se lo paso al socket
+            setModalFormularioTarea( false )
             //despues de  3 segundos reseteo alerta
             setTimeout(() => {
                 setAlerta({})
-                setModalFormularioTarea( false )
             }, 2000)
         } catch (error) {
             console.log(error)
@@ -437,7 +434,6 @@ const ProyectosProvider = ({children}) => {
     }
 
     const eliminarTareaProyecto = tarea => {
-        console.log(tarea)
         //sincronizamos el state
         const proyectoActualizado = { ...proyecto }
         const tareas = proyectoActualizado.tareas.filter( tareaState => tareaState._id !== tarea._id)
@@ -445,6 +441,13 @@ const ProyectosProvider = ({children}) => {
         setProyecto(proyectoActualizado)
     }
     
+    const actualizarTareaProyecto = tarea => {
+        //Agregar la tarea al state
+        const proyectoActualizado = { ...proyecto }
+        proyectoActualizado.tareas = proyectoActualizado.tareas.map( tareaState => tareaState._id === tarea._id ? tarea : tareaState )
+        setProyecto(proyectoActualizado)
+    }
+
     return (
         <ProyectosContext.Provider
             value={{
@@ -477,7 +480,8 @@ const ProyectosProvider = ({children}) => {
                 submitTarea, // funcion para guardar tarea
                 //metodos usados para socket io
                 submitTareasProyecto,
-                eliminarTareaProyecto
+                eliminarTareaProyecto,
+                actualizarTareaProyecto
             }}
         >
             {children}
