@@ -2,6 +2,7 @@ import { useState, useEffect, createContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import clienteAxios from '../config/clienteAxios'
 import io from 'socket.io-client'
+import useAuth from '../hooks/useAuth'
  
 let socket
 const ProyectosContext = createContext()
@@ -17,10 +18,12 @@ const ProyectosProvider = ({children}) => {
     const [ colaborador, setColaborador ] = useState({})
     const [ modalEliminarColaborador, setModalEliminarColaborador ] = useState(false)
     const [ buscador, setBuscador ] = useState(false)
-
-
     const navigate = useNavigate()
+    const { auth } = useAuth()
 
+    /*se podría pasar aqui el contenido de la funcion de obtenerProyectos y pasar auth como dependencia en el use efect
+    de este modo no sería necesario ejecutar un useEffect en la vista de proyectos
+    */
     useEffect(() => {
         obtenerProyectos() // obtengo los proyectos
     }, [])
