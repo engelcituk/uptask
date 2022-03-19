@@ -56,10 +56,13 @@ io.on('connection', (socket) => {
         socket.join(proyecto) //lo uno a este cuarto
     })
 
-    socket.on('nueva tarea', (tarea) => { // el evento
+    socket.on('agregar tarea', tarea => { // el evento
         const proyecto  = tarea.proyecto
-        console.log(proyecto,'antes de emitir')
         socket.to(proyecto).emit('tarea agregada', tarea)
-        console.log(proyecto,'emitito')
+    })
+
+    socket.on('eliminar tarea', tarea => { // el evento
+        const proyecto  = tarea.proyecto
+        socket.to(proyecto).emit('tarea eliminada', tarea)
     })
 })

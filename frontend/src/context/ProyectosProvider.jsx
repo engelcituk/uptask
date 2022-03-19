@@ -177,7 +177,7 @@ const ProyectosProvider = ({children}) => {
             })
             setModalFormularioTarea( false )
             //SOCKET IO
-            socket.emit('nueva tarea', data.tarea) // se lo paso al socket
+            socket.emit('agregar tarea', data.tarea) // se lo paso al socket
 
         } catch (error) {
             if(error.response){
@@ -294,17 +294,15 @@ const ProyectosProvider = ({children}) => {
         try {
             const { data } = await clienteAxios.delete(`/tareas/${id}`, config)
             setAlerta({ msg: data.msg, error: false })
-            //sincronizamos el state
-            const proyectoActualizado = { ...proyecto }
-            const tareas = proyectoActualizado.tareas.filter( tarea => tarea._id !== id)
-            proyectoActualizado.tareas = [ ...tareas ]
-            setProyecto(proyectoActualizado)
-            setTarea({})
+            
             setModalEliminarTarea( false )
+            // socket io
+            socket.emit('eliminar tarea', tarea )
+            setTarea({})
             setTimeout(() => {
                 setAlerta({})
             }, 3000)
-            
+
         } catch (error) {
             console.log(error)
         }
@@ -437,6 +435,15 @@ const ProyectosProvider = ({children}) => {
         proyectoActualizado.tareas = [...proyectoActualizado.tareas, tarea ]
         setProyecto(proyectoActualizado)
     }
+
+    const eliminarTareaProyecto = tarea => {
+        console.log(tarea)
+        //sincronizamos el state
+        const proyectoActualizado = { ...proyecto }
+        const tareas = proyectoActualizado.tareas.filter( tareaState => tareaState._id !== tarea._id)
+        proyectoActualizado.tareas = [ ...tareas ]
+        setProyecto(proyectoActualizado)
+    }
     
     return (
         <ProyectosContext.Provider
@@ -469,7 +476,8 @@ const ProyectosProvider = ({children}) => {
                 submitProyecto, //funcion para guardar el proyecto al back
                 submitTarea, // funcion para guardar tarea
                 //metodos usados para socket io
-                submitTareasProyecto
+                submitTareasProyecto,
+                eliminarTareaProyecto
             }}
         >
             {children}
