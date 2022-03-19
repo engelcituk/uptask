@@ -16,6 +16,9 @@ const Proyectos = () => {
     obtenerProyectos() // obtengo los proyectos
     socket = io(import.meta.env.VITE_BACKEND_URL)
     socket.emit('prueba', 'Juan')
+    socket.on('respuesta', (michi) => {
+      console.log('desde el frontend', michi)
+    })
 }, []) // vacio porque se ejecuta solo una vez
 
   return (
