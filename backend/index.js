@@ -52,8 +52,8 @@ const io = new Server(servidor, {
 io.on('connection', (socket) => {
     console.log('Conectado a Socket.io')
     //Definir los eventos de socket.io
-    socket.on('prueba', (nombre) => {
-        console.log('prueba desde socket io', nombre)
-        socket.emit('respuesta',{nombre: 'michi juanito'})
+    socket.on('abrir proyecto', (proyecto) => { // el evento
+        console.log('desde view proyecto', proyecto )
+        socket.join(proyecto) //lo uno a este cuarto
     })
 })

@@ -3,7 +3,6 @@ import useProyectos from '../hooks/useProyectos'
 //componente
 import PreviewProyecto from '../components/PreviewProyecto'
 import Alerta from '../components/Alerta'
-import io from 'socket.io-client' //cliente
 
 let socket
 
@@ -14,11 +13,6 @@ const Proyectos = () => {
     //use effect que funciona para la vista de listado de proyectos
   useEffect(() => {
     obtenerProyectos() // obtengo los proyectos
-    socket = io(import.meta.env.VITE_BACKEND_URL)
-    socket.emit('prueba', 'Juan')
-    socket.on('respuesta', (michi) => {
-      console.log('desde el frontend', michi)
-    })
 }, []) // vacio porque se ejecuta solo una vez
 
   return (

@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
+import io from 'socket.io-client'
 //hooks propios
 import useProyectos from '../hooks/useProyectos'
 import useAdmin from '../hooks/useAdmin'
@@ -11,7 +12,7 @@ import ModalEliminarColaborador from '../components/ModalEliminarColaborador'
 import Tarea from '../components/Tarea'
 import Colaborador from '../components/Colaborador'
 import Alerta from '../components/Alerta'
-
+let socket
 
 function Proyecto() {
     const params = useParams()
@@ -24,6 +25,18 @@ function Proyecto() {
     useEffect(() => {
         obtenerProyecto(id) 
     }, [])
+
+    useEffect(() => {
+        socket = io(import.meta.env.VITE_BACKEND_URL) //abro mi conexión
+        socket.emit('abrir proyecto', params.id) //le digo en que proyecto estoy,para unirlo al room en el backend
+    }, []) // se ejecuta una sola vez para abrir el proyecto y entrar a ese room
+    
+    useEffect(() => {
+      socket.on('respuesta', (nombre) => {
+          console.log(nombre)
+      })
+    })
+    
     if( cargando ) return <Spinner/>
    
     return (
