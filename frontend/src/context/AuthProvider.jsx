@@ -45,12 +45,17 @@ const AuthProvider = ({children}) => {
         autenticarUsuario()
     }, [])// se ejecuta una sola vez, porque va comprobar si hay token
     
+    const cerrarSesionAuth = () => {
+        setAuth({})
+    }
+
     return (
         <AuthContext.Provider
             value={{
                 auth, // el state auth
                 cargando,
-                setAuth // paso el modificador para usarlo donde sea llamado
+                setAuth, // paso el modificador para usarlo donde sea llamado
+                cerrarSesionAuth
             }}
         >
             {children}
